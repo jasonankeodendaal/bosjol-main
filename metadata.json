@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Bosjol Multi sports arena 1",
+  "description": "Bosjol Multi Sports Arena\nBosjol (bosjol.co.za) is a versatile multi-sport facility and events venue located in Mbombela, Mpumalanga. It serves as a local hub for both competitive action sports and private celebrations.\n\nKey Offerings:\n\nAction Sports: Facilities and leagues for indoor cricket, indoor netball, beach volleyball, indoor hockey, soccer, badminton, and pickleball.\n\nWeddings \u0026 Events: A fully equipped function venue featuring a chapel, a reception hall, a licensed cash bar, and customizable décor packages.\n\nOn-Site Amenities: Additional lifestyle services include an on-site beauty salon (\"Bos Salon\"), photography options, and DJ services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

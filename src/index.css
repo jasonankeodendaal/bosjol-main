@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-green: var(--color-green);
+  --color-lime: var(--color-lime);
+  --color-border-dyn: var(--color-border);
+  
+  --radius-btn: var(--radius-btn);
+  --radius-card: var(--radius-card);
+}
+
+@layer base {
+  body {
+    @apply bg-white text-primary font-sans overflow-x-hidden antialiased selection:bg-lime selection:text-primary;
+    text-rendering: optimizeLegibility;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display uppercase tracking-tight;
+  }
+
+  /* GPU Acceleration hints for high-impact elements */
+  main, section {
+    transform: translateZ(0); 
+    backface-visibility: hidden;
+  }
+
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
+  }
+}
+
+/* Global scrollbar hiding */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html, body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Specific class if needed */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Page transitions may conflict with smooth scroll on the whole doc */
+html {
+  scroll-behavior: auto;
+}
