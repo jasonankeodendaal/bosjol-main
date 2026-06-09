@@ -54,7 +54,7 @@ export default function WelcomeOverlay() {
             className="flex flex-col items-center gap-6 z-10 p-6 text-center w-full max-w-2xl"
           >
             {/* Logos Side by Side */}
-            <div className="flex justify-center items-center gap-8 md:gap-12 mb-4 w-full">
+            <div className="flex justify-center items-center gap-4 md:gap-12 mb-4 w-full">
                {data?.welcome?.logoMain && (
                   <motion.img 
                     initial={{ x: -20, opacity: 0 }}
@@ -62,11 +62,11 @@ export default function WelcomeOverlay() {
                     transition={{ delay: 0.2 }}
                     src={data.welcome.logoMain} 
                     alt="Company Logo" 
-                    className="h-24 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(74,222,128,0.3)]" 
+                    className="h-16 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(74,222,128,0.3)]" 
                   />
                )}
                {data?.welcome?.logoMain && data?.welcome?.logoVenue && (
-                 <div className="w-px h-16 md:h-24 bg-white/20"></div>
+                 <div className="w-px h-10 md:h-24 bg-white/20"></div>
                )}
                {data?.welcome?.logoVenue && (
                   <motion.img 
@@ -75,7 +75,7 @@ export default function WelcomeOverlay() {
                     transition={{ delay: 0.3 }}
                     src={data.welcome.logoVenue} 
                     alt="Venue Logo" 
-                    className="h-24 md:h-32 object-contain opacity-90" 
+                    className="h-16 md:h-32 object-contain opacity-90" 
                   />
                )}
             </div>
@@ -84,7 +84,7 @@ export default function WelcomeOverlay() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-6xl font-display font-bold uppercase tracking-[0.2em] text-white"
+              className="text-4xl md:text-6xl font-display font-bold uppercase tracking-[0.2em] text-white"
             >
               Welcome
             </motion.h1>

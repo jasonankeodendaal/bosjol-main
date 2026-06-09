@@ -46,6 +46,7 @@ export function Navigation() {
         path: `/sports/${s.slug}`
       })) || []
     },
+    { name: 'Contact', path: '/contact', icon: MessageCircle },
     { 
       name: 'Bos Venue', 
       path: '/bos-venue',
@@ -56,7 +57,6 @@ export function Navigation() {
         { name: 'Get In Touch', path: '/bos-venue?tab=contact' }
       ]
     },
-    { name: 'Contact', path: '/contact', icon: MessageCircle },
   ];
 
   return (
@@ -65,10 +65,10 @@ export function Navigation() {
       <header
         className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 ease-out ${
           scrolled 
-            ? 'bg-white/80 backdrop-blur-2xl py-3 shadow-lg border-b border-primary/5' 
+            ? 'bg-white/90 backdrop-blur-2xl py-3 shadow-lg border-b border-primary/10' 
             : isVenuePage 
-              ? 'bg-black/20 backdrop-blur-sm py-5 border-b border-white/5' 
-              : 'bg-transparent py-6 md:py-8'
+              ? 'bg-black/40 backdrop-blur-md py-5 border-b border-white/10' 
+              : 'bg-white/5 backdrop-blur-lg py-6 md:py-8 border-b border-white/10'
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
@@ -102,7 +102,7 @@ export function Navigation() {
                   <div className="flex items-center gap-1 cursor-pointer py-2" tabIndex={0}>
                     <Link
                       to={link.path}
-                      className={`text-[10px] tracking-[0.2em] uppercase font-bold transition-all relative pb-1 ${hoverTextColor} ${
+                      className={`text-sm tracking-[0.12em] uppercase font-bold transition-all relative pb-1 ${hoverTextColor} ${
                         location.pathname === link.path ? activeTextColor : textColor
                       }`}
                     >
@@ -120,7 +120,7 @@ export function Navigation() {
                         <Link 
                           key={subItem.name} 
                           to={subItem.path}
-                          className="px-6 py-2.5 text-[10px] uppercase tracking-widest font-bold text-primary/80 hover:text-green hover:bg-primary/5 transition-all flex items-center justify-between group/item"
+                          className="px-6 py-2.5 text-xs uppercase tracking-widest font-bold text-primary/80 hover:text-green hover:bg-primary/5 transition-all flex items-center justify-between group/item"
                         >
                           {subItem.name}
                           <ArrowLeft size={10} className="rotate-180 opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-all" />
@@ -132,7 +132,7 @@ export function Navigation() {
                   <div className="py-2">
                     <Link
                       to={link.path}
-                      className={`text-[10px] tracking-[0.2em] uppercase font-bold transition-all relative pb-1 ${hoverTextColor} ${
+                      className={`text-sm tracking-[0.12em] uppercase font-bold transition-all relative pb-1 ${hoverTextColor} ${
                         location.pathname === link.path ? activeTextColor : textColor
                       }`}
                     >
@@ -149,10 +149,6 @@ export function Navigation() {
 
           {/* Right Section */}
           <div className="flex items-center gap-4">
-             <Link to="/contact" className="hidden md:block px-5 py-2 bg-green text-white text-[10px] uppercase font-bold tracking-widest rounded-full hover:bg-lime hover:text-primary transition-all duration-300 shadow-lg shadow-green/20">
-               Book Now
-             </Link>
-             
              {/* Mobile Menu trigger */}
              <button 
                className="md:hidden relative z-50 p-2 -mr-2 text-primary"
@@ -175,7 +171,7 @@ export function Navigation() {
             className="fixed inset-0 bg-primary z-[55] flex flex-col p-8 pt-24"
           >
             <div className="space-y-8">
-              <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-4">Quick Navigation</p>
+              <p className="text-white/40 text-xs uppercase tracking-[0.3em] font-bold mb-4">Quick Navigation</p>
               {links.map((link, i) => (
                 <motion.div
                   key={link.name}
@@ -198,7 +194,7 @@ export function Navigation() {
                         <Link
                           key={subItem.name}
                           to={subItem.path}
-                          className="px-3 py-1.5 rounded-full border border-white/20 text-white/60 text-[10px] font-bold uppercase tracking-widest hover:border-green hover:text-green transition-all"
+                          className="px-3 py-1.5 rounded-full border border-white/20 text-white/60 text-xs font-bold uppercase tracking-widest hover:border-green hover:text-green transition-all"
                         >
                            {subItem.name}
                         </Link>

@@ -26,6 +26,13 @@ async function startServer() {
       const filePath = path.join(process.cwd(), 'src/utils/mockData.ts');
       
       await fs.writeFile(filePath, dataStr, "utf-8");
+
+      // Also save as JSON for easy client-side fetching (Live Site feature)
+      const publicDir = path.join(process.cwd(), 'public');
+      try { await fs.access(publicDir); } catch { await fs.mkdir(publicDir); }
+      
+      const jsonPath = path.join(publicDir, 'site-data.json');
+      await fs.writeFile(jsonPath, JSON.stringify(data, null, 2), "utf-8");
       
       try {
         let gitUrl = 'https://github.com/jasonankeodendaal/bosjol-main.git';

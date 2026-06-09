@@ -278,7 +278,27 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
     const loadData = async () => {
       try {
+        // Fetch live data from server to ensure visitors always see the latest version
+        let serverData = null;
+        try {
+           const res = await fetch('/site-data.json');
+           if (res.ok) {
+             serverData = await res.json();
+           }
+        } catch (e) {
+           console.warn("Could not fetch site-data.json", e);
+        }
+
+        const isAdmin = window.location.pathname.startsWith('/admin');
         const storedData = await localforage.getItem<any>('siteData');
+
+        // For visitors, prioritize server data. For admins, prefer local draft.
+        if (!isAdmin && serverData) {
+          setData(serverData);
+          setLoading(false);
+          return;
+        }
+
         if (storedData) {
           let needsUpdate = false;
           
