@@ -187,27 +187,27 @@ export default function BosVenue() {
       </div>
 
       {/* Side by Side Rules Section */}
-      <div className="max-w-7xl mx-auto px-4 mb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="max-w-7xl mx-auto px-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {venue.rules.map((rule, idx) => (
             <motion.div
               key={rule.id || idx}
               initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-primary/5 p-10 rounded-[2.5rem] border border-primary/5"
+              className="bg-primary/5 p-6 rounded-2xl border border-primary/5"
             >
-              <h3 className="text-2xl font-display font-bold text-primary mb-6 flex items-center gap-3">
+              <h3 className="text-xl font-display font-bold text-primary mb-4 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-green/20 flex items-center justify-center text-green text-sm">
                   0{idx + 1}
                 </div>
                 {rule.title}
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {rule.items.map((item, i) => (
                   <li
                     key={i}
-                    className="flex gap-4 items-start text-primary/80 font-sans"
+                    className="flex gap-4 items-start text-primary/80 font-sans text-sm"
                   >
                     <div className="w-1.5 h-1.5 rounded-full bg-green mt-2 px-1" />
                     <span>{item}</span>
@@ -220,23 +220,23 @@ export default function BosVenue() {
       </div>
 
       {/* PDF Downloads Section */}
-      <div className="relative mb-24 overflow-hidden rounded-[3rem] mx-6">
+      <div className="relative mb-24 overflow-hidden rounded-2xl mx-4">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 pointer-events-none"
           style={{ backgroundImage: `url(${venue.bgImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary/40" />
 
-        <div className="relative z-10 p-12 md:p-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
+        <div className="relative z-10 p-6 md:p-12 text-center">
+          <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">
             RULES & PRICING
           </h2>
-          <p className="text-white/60 font-sans text-lg mb-12 max-w-2xl mx-auto">
+          <p className="text-white/60 font-sans text-base mb-10 max-w-2xl mx-auto">
             Download our official documentation for detailed pricing structures
             and venue guidelines.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-w-5xl mx-auto">
             {venue.rulesPdfs.map((pdf, idx) => (
               <div
                 key={pdf.id || idx}
@@ -244,7 +244,7 @@ export default function BosVenue() {
                   e.preventDefault();
                   openPdfInNewTab(pdf);
                 }}
-                className="group relative bg-white/5 cursor-pointer backdrop-blur-md border border-white/10 hover:border-green/40 p-5 rounded-2xl hover:bg-white/[0.08] transition-all duration-300 flex items-center gap-4 w-full overflow-hidden text-left"
+                className="group relative bg-white/5 cursor-pointer backdrop-blur-md border border-white/10 hover:border-green/40 p-4 rounded-xl hover:bg-white/[0.08] transition-all duration-300 flex items-center gap-3 w-full overflow-hidden text-left"
               >
                 {/* Micro accent block gradient */}
                 <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -253,7 +253,7 @@ export default function BosVenue() {
                 <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 group-hover:bg-green transition-colors duration-300" />
 
                 {/* Compact premium thumbnail container */}
-                <div className="w-12 h-16 bg-white/5 rounded-lg flex-shrink-0 flex items-center justify-center border border-white/5 relative overflow-hidden group-hover:bg-green/10 transition-colors duration-300">
+                <div className="w-10 h-12 bg-white/5 rounded-lg flex-shrink-0 flex items-center justify-center border border-white/5 relative overflow-hidden group-hover:bg-green/10 transition-colors duration-300">
                   {pdf.thumbnail ? (
                     <img
                       src={pdf.thumbnail}
@@ -262,27 +262,24 @@ export default function BosVenue() {
                       alt=""
                     />
                   ) : (
-                    <FileText className="text-white/40 group-hover:text-green w-5 h-5 transition-colors duration-300" />
+                    <FileText className="text-white/40 group-hover:text-green w-4 h-4 transition-colors duration-300" />
                   )}
                 </div>
 
                 {/* Title & metadata content */}
                 <div className="flex-grow min-w-0 pr-2">
-                  <span className="text-[10px] font-mono tracking-widest text-green uppercase block mb-1">
+                  <span className="text-[9px] font-mono tracking-widest text-green uppercase block mb-0.5">
                     Official Guide
                   </span>
-                  <h4 className="text-white font-sans font-semibold text-sm leading-tight group-hover:text-green transition-colors duration-300 line-clamp-2">
+                  <h4 className="text-white font-sans font-semibold text-xs leading-tight group-hover:text-green transition-colors duration-300 line-clamp-2">
                     {pdf.title}
                   </h4>
-                  <p className="text-white/40 text-xs font-mono mt-1.5">
-                    {pdf.size || "SECURE_PDF"}
-                  </p>
                 </div>
 
                 {/* High-class action arrow button */}
-                <div className="flex-shrink-0 w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:bg-green group-hover:border-green group-hover:text-primary text-white transition-all duration-300">
+                <div className="flex-shrink-0 w-7 h-7 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:bg-green group-hover:border-green group-hover:text-primary text-white transition-all duration-300">
                   <svg
-                    className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform"
+                    className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -315,7 +312,7 @@ export default function BosVenue() {
         </h2>
         <div className="w-24 h-1.5 bg-green mx-auto mt-6 rounded-full shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-5 gap-2 md:grid-cols-3 lg:grid-cols-3 md:gap-8">
         {venue.events.map((ev, idx) => (
           <motion.div
             key={ev.id || idx}
@@ -330,7 +327,7 @@ export default function BosVenue() {
             onClick={() => setSelectedEvent(ev)}
             className="group cursor-pointer"
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-2xl mb-6">
+            <div className="relative aspect-square overflow-hidden rounded-lg shadow-md mb-2 md:rounded-[2.5rem] md:shadow-2xl md:mb-6">
               <div className="absolute inset-0 z-10 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent transition-opacity duration-500 group-hover:opacity-70" />
 
                   {ev.media[0] &&
@@ -348,19 +345,19 @@ export default function BosVenue() {
                       />
                     ))}
 
-              <div className="absolute bottom-10 left-10 right-10 z-20">
-                <div className="flex items-center gap-2 mb-4">
+              <div className="absolute bottom-2 left-2 right-2 z-20 md:bottom-10 md:left-10 md:right-10">
+                <div className="hidden md:flex items-center gap-2 mb-4">
                   <span className="w-8 h-[2px] bg-green"></span>
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-green/90">
                     {ev.date}
                   </span>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white leading-tight uppercase tracking-wide group-hover:text-green transition-colors">
+                <h3 className="text-[10px] md:text-3xl font-display font-bold text-white leading-tight uppercase tracking-wide group-hover:text-green transition-colors">
                   {ev.title}
                 </h3>
               </div>
 
-              <div className="absolute inset-4 border border-white/10 rounded-[2rem] z-0 transition-all duration-500 group-hover:inset-6"></div>
+              <div className="absolute inset-1 border border-white/10 rounded-md z-0 transition-all duration-500 md:inset-4 md:rounded-[2rem] group-hover:md:inset-6"></div>
             </div>
 
             <div className="px-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 text-left">
@@ -627,77 +624,77 @@ export default function BosVenue() {
           {venue.contact.subtitle}
         </p>
 
-        <div className="bg-white rounded-[3rem] p-10 shadow-xl border border-primary/5">
+        <div className="bg-white rounded-2xl p-6 shadow-xl border border-primary/5">
         <form
-          className="space-y-6"
+          className="space-y-4"
           onSubmit={handleVenueSubmit}
         >
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+              <label className="block text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">
                 Name
               </label>
               <input
                 type="text"
                 value={venueFormData.name}
                 onChange={(e) => setVenueFormData(p => ({ ...p, name: e.target.value }))}
-                className="w-full bg-primary/5 rounded-xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all"
+                className="w-full bg-primary/5 rounded-lg px-3 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-green transition-all"
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+              <label className="block text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">
                 Surname
               </label>
               <input
                 type="text"
                 value={venueFormData.surname}
                 onChange={(e) => setVenueFormData(p => ({ ...p, surname: e.target.value }))}
-                className="w-full bg-primary/5 rounded-xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all"
+                className="w-full bg-primary/5 rounded-lg px-3 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-green transition-all"
                 required
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+              <label className="block text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">
                 Telephone
               </label>
               <div className="relative">
-                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-primary/40 font-bold text-sm">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40 font-bold text-xs">
                   +27
                 </span>
                 <input
                   type="tel"
                   value={venueFormData.telephone}
                   onChange={(e) => setVenueFormData(p => ({ ...p, telephone: e.target.value }))}
-                  className="w-full bg-primary/5 rounded-xl pl-14 pr-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all"
+                  className="w-full bg-primary/5 rounded-lg pl-10 pr-3 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-green transition-all"
                   placeholder="80 000 0000"
                   required
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+              <label className="block text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">
                 Email
               </label>
               <input
                 type="email"
                 value={venueFormData.email}
                 onChange={(e) => setVenueFormData(p => ({ ...p, email: e.target.value }))}
-                className="w-full bg-primary/5 rounded-xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all"
+                className="w-full bg-primary/5 rounded-lg px-3 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-green transition-all"
                 required
               />
             </div>
           </div>
           <div>
-            <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+            <label className="block text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">
               Inquiry Type
             </label>
             <select
               value={venueFormData.inquiryType}
               onChange={(e) => setVenueFormData(p => ({ ...p, inquiryType: e.target.value }))}
-              className="w-full bg-primary/5 rounded-xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all appearance-none"
+              className="w-full bg-primary/5 rounded-lg px-3 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-green transition-all appearance-none"
               required
             >
               <option value="" disabled>Select an inquiry type</option>
@@ -705,20 +702,20 @@ export default function BosVenue() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+            <label className="block text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1">
               Message Breakdown
             </label>
             <textarea
-              rows={5}
+              rows={4}
               value={venueFormData.message}
               onChange={(e) => setVenueFormData(p => ({ ...p, message: e.target.value }))}
-              className="w-full bg-primary/5 rounded-xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all"
+              className="w-full bg-primary/5 rounded-lg px-3 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-green transition-all"
               required
             ></textarea>
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white font-bold uppercase tracking-widest py-5 rounded-xl hover:bg-green hover:text-primary transition-colors text-sm shadow-md mt-4"
+            className="w-full bg-primary text-white font-bold uppercase tracking-widest py-4 rounded-lg hover:bg-green hover:text-primary transition-colors text-xs shadow-md mt-2"
           >
             Send via WhatsApp
           </button>

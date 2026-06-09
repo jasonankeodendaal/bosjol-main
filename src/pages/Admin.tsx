@@ -24,6 +24,7 @@ import {
   Code,
   MapPin,
   Share2,
+  Menu,
 } from "lucide-react";
 import Editor from "react-simple-wysiwyg";
 
@@ -63,6 +64,7 @@ export default function AdminDashboard() {
     arrayIndex?: number;
   } | null>(null);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -355,10 +357,13 @@ export default function AdminDashboard() {
         <div className="w-full bg-white rounded-xl md:rounded-2xl shadow-sm border border-primary/5 overflow-hidden">
           {/* Top Bar: Brand & Session */}
           <div className="px-4 md:px-8 py-3 md:py-4 border-b border-primary/5 flex justify-between items-center bg-primary text-white">
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="bg-white/10 p-1.5 md:p-2 rounded-lg">
-                <Settings className="w-5 h-5 md:w-6 md:h-6 text-green" />
-              </div>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)} 
+                className="md:hidden p-2 hover:bg-white/10 rounded-lg"
+              >
+                <Menu size={20} />
+              </button>
               <div>
                 <h2 className="font-display font-bold text-lg md:text-xl uppercase tracking-wider leading-none">
                   BOSJOL Management
@@ -379,46 +384,32 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          {/* Navigation Rows - Scrollable on mobile */}
-          <div className="bg-primary/5 flex flex-col overflow-hidden">
-            <div className="px-3 py-2 flex overflow-x-auto no-scrollbar gap-2 items-center">
-              {[
-                { id: "company", label: "Identity", icon: Globe },
-                { id: "theme", label: "Aesthetics", icon: Settings },
-                { id: "seo", label: "Engine", icon: Search },
-                { id: "maintenance", label: "System", icon: Code },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-2.5 rounded-lg md:rounded-xl transition-all font-bold text-[10px] md:text-[11px] uppercase tracking-wider whitespace-nowrap ${activeTab === tab.id ? "bg-primary text-white shadow-lg" : "text-primary/40 hover:text-primary hover:bg-white"}`}
-                >
-                  <tab.icon size={12} className="md:w-3.5 md:h-3.5" />
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="h-px w-full bg-primary/5 mx-2" />
-
-            <div className="px-3 py-2 flex overflow-x-auto no-scrollbar gap-2 items-center">
-              {[
-                { id: "home", label: "Home Page" },
-                { id: "sports", label: "Sports Pages" },
-                { id: "bosVenue", label: "Venue Site" },
-                { id: "contact", label: "Contact" },
-                { id: "welcome", label: "Welcome" },
-                { id: "legal", label: "Legal" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 md:px-6 py-2 md:py-2.5 rounded-lg md:rounded-xl transition-all font-bold text-[10px] md:text-[11px] uppercase tracking-wider whitespace-nowrap ${activeTab === tab.id ? "bg-green text-primary shadow-lg" : "text-primary/40 hover:text-primary hover:bg-white"}`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+          {/* Navigation - Vertical Dropdown */}
+          <div className={`${isMenuOpen ? "flex" : "hidden"} bg-primary/5 flex-col p-2 gap-1`}>
+            {[
+              { id: "company", label: "Identity", icon: Globe },
+              { id: "theme", label: "Aesthetics", icon: Settings },
+              { id: "seo", label: "Engine", icon: Search },
+              { id: "maintenance", label: "System", icon: Code },
+              { id: "home", label: "Home Page" },
+              { id: "sports", label: "Sports Pages" },
+              { id: "bosVenue", label: "Venue Site" },
+              { id: "contact", label: "Contact" },
+              { id: "welcome", label: "Welcome" },
+              { id: "legal", label: "Legal" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveTab(tab.id as any);
+                  setIsMenuOpen(false);
+                }}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-bold text-xs uppercase tracking-wider ${activeTab === tab.id ? "bg-primary text-white" : "text-primary/60 hover:text-primary hover:bg-white"}`}
+              >
+                {tab.icon && <tab.icon size={16} />}
+                {tab.label}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -490,21 +481,21 @@ export default function AdminDashboard() {
                   )}
                 </button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4">
+                <div className="space-y-4">
                   {renderImageUpload("Company Logo", ["company", "logo"])}
                   {renderInput("Company Name", ["company", "name"])}
                   {renderInput("Email Address", ["company", "email"])}
                 </div>
-                <div>
+                <div className="space-y-4">
                   {renderInput("Phone Number (+27 for South Africa)", [
                     "company",
                     "phone",
                   ])}
                   {renderInput("Physical Address", ["company", "address"])}
 
-                  <div className="flex justify-between items-center mt-8 mb-4">
-                    <h4 className="font-bold text-sm tracking-widest uppercase text-primary">
+                  <div className="flex justify-between items-center mt-4 mb-2">
+                    <h4 className="font-bold text-xs tracking-widest uppercase text-primary">
                       Social Links
                     </h4>
                     <button
@@ -524,7 +515,7 @@ export default function AdminDashboard() {
                       }
                       className="bg-primary text-white p-1 rounded hover:bg-green"
                     >
-                      <Plus size={16} />
+                      <Plus size={14} />
                     </button>
                   </div>
                   <div className="space-y-4">
@@ -605,424 +596,87 @@ export default function AdminDashboard() {
           )}
 
           {activeTab === "theme" && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="flex justify-between items-center mb-8 border-b border-primary/10 pb-4">
-                <h3 className="text-2xl font-display font-bold text-primary">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-4">
+                <h3 className="text-lg font-display font-bold text-primary tracking-wide uppercase">
                   Theme & Branding Editor
                 </h3>
                 <button
                   onClick={() => handleSave("theme")}
-                  className="bg-green text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lime transition-all"
+                  className="bg-green text-white px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-lime transition-all shadow-md"
                 >
-                  {isSaving["theme"] ? (
-                    "Saving..."
-                  ) : (
+                  {isSaving["theme"] ? "Saving..." : (
                     <>
-                      <Save size={16} /> Save Changes
+                      <Save size={14} /> Save
                     </>
                   )}
                 </button>
               </div>
 
-              <div className="bg-primary/5 p-6 rounded-2xl mb-8">
-                <h4 className="font-bold uppercase tracking-wider text-primary mb-4">
-                  Main Site Theme Configuration
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Primary Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.primaryColor }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.primaryColor}
-                      onChange={(e) =>
-                        updateDraft(["theme", "primaryColor"], e.target.value)
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Accent Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.accentColor }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.accentColor}
-                      onChange={(e) =>
-                        updateDraft(["theme", "accentColor"], e.target.value)
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Accent Hover{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.accentHover }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.accentHover}
-                      onChange={(e) =>
-                        updateDraft(["theme", "accentHover"], e.target.value)
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Secondary Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.secondaryColor }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.secondaryColor}
-                      onChange={(e) =>
-                        updateDraft(["theme", "secondaryColor"], e.target.value)
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Background Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.backgroundColor }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.backgroundColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["theme", "backgroundColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Text Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.textColor }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.textColor}
-                      onChange={(e) =>
-                        updateDraft(["theme", "textColor"], e.target.value)
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Border Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{ backgroundColor: draft.theme.borderColor }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.theme.borderColor}
-                      onChange={(e) =>
-                        updateDraft(["theme", "borderColor"], e.target.value)
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-4">
-                  {renderInput("Button Border Radius (e.g. 0.75rem)", [
-                    "theme",
-                    "buttonRadius",
-                  ])}
-                  {renderInput("Card Border Radius (e.g. 1.5rem)", [
-                    "theme",
-                    "cardRadius",
-                  ])}
+              {/* Typography */}
+              <div className="bg-primary/5 p-4 rounded-xl border border-primary/5">
+                <h4 className="font-bold uppercase tracking-widest text-primary/60 mb-4 text-xs">Typography</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {renderDropdown("Heading Font", ["theme", "headingFont"], ["'Oswald', sans-serif", "'Space Grotesk', sans-serif", "'Outfit', sans-serif", "'Playfair Display', serif"])}
+                  {renderDropdown("Body Font", ["theme", "bodyFont"], ["'Inter', sans-serif", "'JetBrains Mono', monospace"])}
                 </div>
               </div>
 
-              <div className="bg-primary/5 p-6 rounded-2xl mb-8 border border-primary/10 shadow-sm">
-                <h4 className="font-bold uppercase tracking-wider text-primary mb-4 text-sm">
-                  Main Site Branding
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2">
-                      Logo Display Height (px)
-                    </label>
-                    <input
-                      type="range"
-                      min="20"
-                      max="120"
-                      value={draft.company?.logoHeight || 48}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["company", "logoHeight"],
-                          parseInt(e.target.value),
-                        )
-                      }
-                      className="w-full accent-green"
-                    />
-                    <span className="text-[10px] font-mono text-primary/40">
-                      {draft.company?.logoHeight || 48}px
-                    </span>
-                  </div>
+              {/* Color Palette */}
+              <div className="bg-primary/5 p-4 rounded-xl border border-primary/5">
+                <h4 className="font-bold uppercase tracking-widest text-primary/60 mb-4 text-xs">Color Palette</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { label: "Primary", path: ["theme", "primaryColor"] },
+                    { label: "Accent", path: ["theme", "accentColor"] },
+                    { label: "Accent Hover", path: ["theme", "accentHover"] },
+                    { label: "Secondary", path: ["theme", "secondaryColor"] },
+                    { label: "Background", path: ["theme", "backgroundColor"] },
+                    { label: "Text", path: ["theme", "textColor"] },
+                    { label: "Border", path: ["theme", "borderColor"] },
+                  ].map((color) => {
+                     const colorVal = color.path.reduce((acc: any, key) => acc[key], draft);
+                     return (
+                        <div key={color.label} className="bg-white p-3 rounded-lg shadow-sm border border-primary/5">
+                          <label className="block text-[9px] font-bold text-primary/70 mb-2 flex items-center justify-between">
+                             {color.label}
+                             <div className="w-4 h-4 rounded-full border border-primary/20" style={{ backgroundColor: colorVal }}></div>
+                          </label>
+                          <input
+                             type="color"
+                             value={colorVal}
+                             onChange={(e) => updateDraft(color.path, e.target.value)}
+                             className="w-full h-6 cursor-pointer rounded border border-primary/10"
+                          />
+                        </div>
+                     )
+                  })}
                 </div>
               </div>
 
-              <div className="bg-primary/5 p-6 rounded-2xl mb-8 border border-primary/10 shadow-sm">
-                <h4 className="font-bold uppercase tracking-wider text-primary mb-4">
-                  Bos Venue Theme Configuration
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Primary Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.primaryColor,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.primaryColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "primaryColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Accent Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.accentColor,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.accentColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "accentColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Accent Hover{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.accentHover,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.accentHover}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "accentHover"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Secondary Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.secondaryColor,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.secondaryColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "secondaryColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Background Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.backgroundColor,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.backgroundColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "backgroundColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Text Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.textColor,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.textColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "textColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2 flex items-center gap-2">
-                      Border Color{" "}
-                      <div
-                        className="w-4 h-4 rounded-full border border-primary/20"
-                        style={{
-                          backgroundColor: draft.bosVenue.theme.borderColor,
-                        }}
-                      ></div>
-                    </label>
-                    <input
-                      type="color"
-                      value={draft.bosVenue.theme.borderColor}
-                      onChange={(e) =>
-                        updateDraft(
-                          ["bosVenue", "theme", "borderColor"],
-                          e.target.value,
-                        )
-                      }
-                      className="w-full h-10 cursor-pointer rounded-lg border-none"
-                    />
-                  </div>
+              {/* Shapes & Sizes */}
+              <div className="bg-primary/5 p-4 rounded-xl border border-primary/5">
+                <h4 className="font-bold uppercase tracking-widest text-primary/60 mb-4 text-xs">Shapes & Sizes</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {renderInput("Button Border Radius (e.g. 0.75rem)", ["theme", "buttonRadius"])}
+                  {renderInput("Card Border Radius (e.g. 1.5rem)", ["theme", "cardRadius"])}
+                  {renderInput("Logo Display Height (px)", ["company", "logoHeight"])}
                 </div>
+              </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-4">
-                  {renderInput("Button Border Radius (e.g. 0.75rem)", [
-                    "bosVenue",
-                    "theme",
-                    "buttonRadius",
-                  ])}
-                  {renderInput("Card Border Radius (e.g. 1.5rem)", [
-                    "bosVenue",
-                    "theme",
-                    "cardRadius",
-                  ])}
-                </div>
-
-                <div className="mt-8 border-t border-primary/10 pt-8">
-                  <h4 className="font-bold uppercase tracking-wider text-primary mb-4 text-sm">
-                    Bos Venue Branding & Overlays
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+              {/* Bos Venue Specific */}
+              <div className="bg-primary/5 p-8 rounded-2xl border border-primary/5">
+                <h4 className="font-bold uppercase tracking-widest text-primary/60 mb-6 text-sm">Bos Venue Addons</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="mb-4">
-                      <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2">
-                        Background Overlay Opacity
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={
-                          draft.bosVenue?.bgOpacity !== undefined
-                            ? draft.bosVenue.bgOpacity
-                            : 80
-                        }
-                        onChange={(e) =>
-                          updateDraft(
-                            ["bosVenue", "bgOpacity"],
-                            parseInt(e.target.value),
-                          )
-                        }
-                        className="w-full accent-green"
-                      />
-                      <span className="text-[10px] font-mono text-primary/40">
-                        {draft.bosVenue?.bgOpacity !== undefined
-                          ? draft.bosVenue.bgOpacity
-                          : 80}
-                        %
-                      </span>
+                        <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2">Background Overlay Opacity (%)</label>
+                        <input
+                            type="range" min="0" max="100"
+                            value={draft.bosVenue?.bgOpacity ?? 80}
+                            onChange={(e) => updateDraft(["bosVenue", "bgOpacity"], parseInt(e.target.value))}
+                            className="w-full h-2 bg-primary/20 rounded-lg appearance-none cursor-pointer accent-green"
+                        />
                     </div>
-                    <div className="mb-4">
-                      <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2">
-                        Logo Display Height (px)
-                      </label>
-                      <input
-                        type="range"
-                        min="20"
-                        max="200"
-                        value={draft.bosVenue?.logoHeight || 120}
-                        onChange={(e) =>
-                          updateDraft(
-                            ["bosVenue", "logoHeight"],
-                            parseInt(e.target.value),
-                          )
-                        }
-                        className="w-full accent-green"
-                      />
-                      <span className="text-[10px] font-mono text-primary/40">
-                        {draft.bosVenue?.logoHeight || 120}px
-                      </span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -1188,28 +842,26 @@ export default function AdminDashboard() {
           )}
 
           {activeTab === "home" && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="flex justify-between items-center mb-8 border-b border-primary/10 pb-4">
-                <h3 className="text-2xl font-display font-bold text-primary">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-4">
+                <h3 className="text-lg font-display font-bold text-primary">
                   Home Page Editor
                 </h3>
                 <button
                   onClick={() => handleSave("home")}
-                  className="bg-green text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lime transition-all"
+                  className="bg-green text-white px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-lime transition-all shadow-md"
                 >
-                  {isSaving["home"] ? (
-                    "Saving..."
-                  ) : (
+                  {isSaving["home"] ? "Saving..." : (
                     <>
-                      <Save size={16} /> Save Changes
+                      <Save size={14} /> Save
                     </>
                   )}
                 </button>
               </div>
 
-              <div className="bg-primary/5 p-6 rounded-2xl mb-8">
+              <div className="bg-primary/5 p-4 rounded-xl">
                 <div className="flex justify-between items-center mb-4">
-                  <h4 className="font-bold uppercase tracking-wider text-primary">
+                  <h4 className="font-bold uppercase tracking-wider text-primary text-xs">
                     Hero Background Media
                   </h4>
                   <button
@@ -1222,16 +874,16 @@ export default function AdminDashboard() {
                         ],
                       )
                     }
-                    className="flex items-center gap-1 bg-primary text-white px-2 py-1 rounded text-xs hover:bg-green"
+                    className="flex items-center gap-1 bg-primary text-white px-2 py-1 rounded text-[10px] hover:bg-green"
                   >
-                    <Plus size={14} /> Add Media
+                    <Plus size={12} /> Add
                   </button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   {draft.home.heroMedia.map((media, idx) => (
                     <div
                       key={media.id}
-                      className="relative bg-white rounded-xl border border-primary/20 p-2"
+                      className="relative bg-white rounded-lg border border-primary/10 p-1"
                     >
                       <button
                         onClick={() => {
@@ -1239,9 +891,9 @@ export default function AdminDashboard() {
                           arr.splice(idx, 1);
                           updateDraft(["home", "heroMedia"], arr);
                         }}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 z-10 hover:bg-red-600"
+                        className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 z-10 hover:bg-red-600"
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size={10} />
                       </button>
                       <select
                         value={media.type}
@@ -1250,13 +902,13 @@ export default function AdminDashboard() {
                           arr[idx].type = e.target.value as "image" | "video";
                           updateDraft(["home", "heroMedia"], arr);
                         }}
-                        className="w-full text-xs p-1 mb-2 border border-primary/10 rounded"
+                        className="w-full text-[9px] p-0.5 mb-1 border border-primary/10 rounded"
                       >
                         <option value="image">Image</option>
                         <option value="video">Video</option>
                       </select>
                       <div
-                        className="relative h-24 rounded border border-dashed border-primary/20 bg-primary/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-green"
+                        className="relative h-16 rounded border border-dashed border-primary/10 bg-primary/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-green"
                         onClick={() =>
                           triggerFileInput(
                             ["home", "heroMedia"],
@@ -1280,18 +932,18 @@ export default function AdminDashboard() {
                             />
                           )
                         ) : (
-                          <ImageIcon size={20} className="text-primary/30" />
+                          <ImageIcon size={14} className="text-primary/30" />
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
-                {renderInput("Hero Title", ["home", "heroTitle"], true)}
-                {renderInput("Hero Subtitle", ["home", "heroSubtitle"], true)}
+                {renderInput("Hero Title", ["home", "heroTitle"])}
+                {renderInput("Hero Subtitle", ["home", "heroSubtitle"])}
               </div>
 
-              <div className="bg-primary/5 p-6 rounded-2xl mb-8">
-                <h4 className="font-bold uppercase tracking-wider text-primary mb-4">
+              <div className="bg-primary/5 p-4 rounded-xl">
+                <h4 className="font-bold uppercase tracking-wider text-primary text-xs mb-4">
                   Meet the Owner
                 </h4>
                 {renderImageUpload("Owner Image", ["home", "ownerImage"])}

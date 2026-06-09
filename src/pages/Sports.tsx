@@ -52,95 +52,61 @@ export default function Sports() {
 
         <div className="relative z-20 pt-10">
           {/* THE STORY BEHIND IT */}
-          <section className="max-w-3xl mx-auto px-6 py-24">
-            <h2
-              className="text-4xl md:text-5xl font-display tracking-tight text-primary mb-10 font-bold"
-              dangerouslySetInnerHTML={{ __html: sportData.storyTitle }}
-            />
-            <div className="w-16 h-1 bg-green rounded-full mb-10" />
-
-            <div className="text-primary leading-relaxed text-lg space-y-8">
-              <p dangerouslySetInnerHTML={{ __html: sportData.storyText1 }} />
-              <p dangerouslySetInnerHTML={{ __html: sportData.storyText2 }} />
+          <section className="max-w-5xl mx-auto px-4 py-8 md:py-12">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
+              <div>
+                <h2
+                  className="text-2xl md:text-4xl font-display tracking-tight text-primary mb-4 md:mb-6 font-bold"
+                  dangerouslySetInnerHTML={{ __html: sportData.storyTitle }}
+                />
+                <div className="w-12 h-1 bg-green rounded-full mb-6 md:mb-8" />
+              </div>
+              <div className="text-primary leading-relaxed text-sm md:text-base space-y-4">
+                <p dangerouslySetInnerHTML={{ __html: sportData.storyText1 }} />
+                <p dangerouslySetInnerHTML={{ __html: sportData.storyText2 }} />
+              </div>
             </div>
           </section>
 
           {/* RULES & FORMS PDF SECT */}
           {sportData.pdfs && sportData.pdfs.length > 0 && (
-            <section className="relative py-16 overflow-hidden bg-primary/5 mx-4 md:mx-10 rounded-[3rem]">
+            <section className="relative py-8 md:py-12 overflow-hidden bg-primary/5 mx-2 md:mx-10 rounded-2xl md:rounded-[2rem]">
               <div className="absolute top-1/2 -right-20 w-80 h-80 bg-green/10 rounded-full blur-[80px] -translate-y-1/2 -z-10" />
 
-              <div className="max-w-4xl mx-auto px-6">
+              <div className="max-w-5xl mx-auto px-4">
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="text-center mb-10"
+                  className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
                 >
-                  <h3 className="text-2xl font-display font-medium tracking-wide text-primary uppercase mb-2">
+                  <h3 className="text-lg md:text-xl font-display font-medium tracking-wide text-primary uppercase">
                     Official Documentation
                   </h3>
-                  <p className="text-primary font-medium text-base">
-                    Download necessary forms, regulations, and tournament
-                    brackets.
+                  <p className="text-primary/70 font-medium text-xs md:text-sm">
+                    Download necessary forms and regulations.
                   </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {sportData.pdfs.map((pdf, idx) => (
                     <motion.div
                       key={pdf.id || idx}
-                      initial={{ opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ delay: idx * 0.08, ease: "easeOut" }}
+                      transition={{ delay: idx * 0.05, ease: "easeOut" }}
                     >
                       <button
                         onClick={() => openPdfInNewTab(pdf)}
-                        className="group relative w-full text-left flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-primary/10 rounded-xl p-4 hover:border-green hover:bg-white hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer"
+                        className="group relative w-full text-left flex flex-col gap-2 bg-white/70 backdrop-blur-sm border border-primary/10 rounded-xl p-3 hover:border-green hover:bg-white hover:shadow-sm transition-all duration-300"
                       >
-                        {/* Interactive Accent Indicator */}
-                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-primary/10 group-hover:bg-green transition-colors duration-300" />
-                        
-                        {/* Elite Minimal Thumbnail Case */}
-                        <div className="w-12 h-16 bg-primary/5 rounded-lg flex-shrink-0 flex items-center justify-center border border-primary/5 relative overflow-hidden group-hover:bg-green/5 transition-colors duration-300">
-                          {pdf.thumbnail ? (
-                            <img
-                              src={pdf.thumbnail}
-                              loading="lazy"
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                              alt=""
-                            />
-                          ) : (
-                            <FileText className="w-5 h-5 text-primary/40 group-hover:text-green transition-colors duration-300" />
-                          )}
-                        </div>
-
-                        {/* Text and meta descriptors */}
-                        <div className="flex-grow min-w-0 pr-2">
-                          <span className="text-[10px] font-mono tracking-widest text-primary/50 uppercase block mb-1 font-bold">
-                            DOC-{String(idx + 1).padStart(2, "0")}
-                          </span>
-                          <h4 className="font-bold text-sm text-primary leading-tight line-clamp-2 group-hover:text-green transition-colors duration-200">
-                            {pdf.title}
-                          </h4>
-                          <span className="text-xs text-primary/50 font-mono block mt-1.5">
-                            {pdf.size || "SECURE PDF"}
-                          </span>
-                        </div>
-
-                        {/* Action icon indicator */}
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full border border-primary/5 flex items-center justify-center bg-primary/5 group-hover:bg-green group-hover:border-green group-hover:text-primary text-primary transition-all duration-300">
-                          <svg
-                            className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                          >
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                          </svg>
-                        </div>
+                         <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center border border-primary/5 group-hover:bg-green/5">
+                            <FileText className="w-4 h-4 text-primary/40 group-hover:text-green" />
+                         </div>
+                         <h4 className="font-bold text-xs text-primary leading-tight line-clamp-2">
+                           {pdf.title}
+                         </h4>
                       </button>
                     </motion.div>
                   ))}
@@ -151,33 +117,27 @@ export default function Sports() {
 
           {/* DYNAMIC IMAGE GALLERY */}
           {sportData.gallery && sportData.gallery.length > 0 && (
-            <section className="py-20 px-6 max-w-6xl mx-auto">
-              <h3 className="text-center text-xl font-display font-medium tracking-widest text-primary uppercase mb-10 opacity-80">
+            <section className="py-8 md:py-12 px-2 md:px-10 max-w-7xl mx-auto">
+              <h3 className="text-left text-sm font-display font-medium tracking-widest text-primary uppercase mb-6 opacity-80">
                 Visual <span className="text-green">Archives</span>
               </h3>
 
-              <div className="flex flex-wrap gap-4 justify-center">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
                 {sportData.gallery.map((img, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1, duration: 0.5 }}
-                    className={`relative overflow-hidden cursor-pointer rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 ${
-                      idx === 0 || idx === 3
-                        ? "w-full md:w-[58%]"
-                        : "w-full md:w-[38%]"
-                    } h-[250px] md:h-[300px] group`}
+                    transition={{ delay: idx * 0.05, duration: 0.3 }}
+                    className="relative overflow-hidden cursor-pointer rounded-lg md:rounded-xl shadow-sm hover:shadow-md transition-all duration-300 aspect-square group"
                     onClick={() => setSelectedImage(img)}
                   >
-                    <motion.div className="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                    <motion.div className="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <motion.img
                       src={img}
                       loading="lazy"
                       alt={`Sport image ${idx + 1}`}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.7 }}
                       className="w-full h-full object-cover"
                     />
                   </motion.div>
@@ -187,7 +147,7 @@ export default function Sports() {
           )}
 
           {/* VIDEO SHOWCASE */}
-          <section className="relative py-24 mx-4 md:mx-10 rounded-[3rem] mb-10 overflow-hidden flex items-center justify-center">
+          <section className="relative py-16 mx-2 md:mx-10 rounded-2xl md:rounded-[2rem] mb-10 overflow-hidden flex items-center justify-center">
             <div className="absolute inset-0 bg-primary z-0" />
 
             {sportData.videoBg &&

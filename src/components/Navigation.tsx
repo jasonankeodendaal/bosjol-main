@@ -182,6 +182,7 @@ export function Navigation() {
                 >
                   <Link
                     to={link.path}
+                    onClick={() => setMobileMenuOpen(false)}
                     className={`text-3xl font-display font-medium tracking-wide uppercase transition-colors ${
                       location.pathname === link.path ? 'text-green' : 'text-white'
                     }`}
@@ -194,6 +195,7 @@ export function Navigation() {
                         <Link
                           key={subItem.name}
                           to={subItem.path}
+                          onClick={() => setMobileMenuOpen(false)}
                           className="px-3 py-1.5 rounded-full border border-white/20 text-white/60 text-xs font-bold uppercase tracking-widest hover:border-green hover:text-green transition-all"
                         >
                            {subItem.name}

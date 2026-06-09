@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { PageTransition } from '../components/PageTransition';
 import { BrandLogoStrip } from '../components/BrandLogoStrip';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAdmin, HeroMedia } from '../context/AdminContext';
 
@@ -89,6 +89,16 @@ export default function Home() {
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  const milestonesRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (milestonesRef.current) {
+      const { scrollLeft, clientWidth } = milestonesRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth * 0.8 : scrollLeft + clientWidth * 0.8;
+      milestonesRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
   if (loading) return null;
 
   return (
@@ -148,7 +158,7 @@ export default function Home() {
         {/* MEET THE OWNER SECTION (FREE VIEW) */}
         <div className="relative z-20 pt-24 pb-24">
           {/* Intro block */}
-          <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 gap-4 items-center">
             
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
@@ -173,14 +183,14 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-6"
             >
-              <h2 className="text-3xl md:text-5xl font-display font-medium text-primary tracking-wide leading-tight">
+              <h2 className="text-2xl md:text-5xl font-display font-medium text-primary tracking-wide leading-tight">
                 <span className="text-green uppercase text-xs tracking-[0.3em] block mb-2 font-bold">The Vision</span>
                 {data.home.ownerTitle}
               </h2>
               
               <div className="w-12 h-1 bg-gradient-to-r from-green to-lime rounded-full" />
               
-              <div className="space-y-4 text-primary/90 leading-relaxed text-base">
+              <div className="space-y-4 text-primary/90 leading-relaxed text-sm md:text-base">
                 <p dangerouslySetInnerHTML={{ __html: data.home.ownerText1 }} />
                 <p className="italic font-medium text-primary border-l-4 border-lime pl-4" dangerouslySetInnerHTML={{ __html: data.home.ownerText2 }} />
               </div>
@@ -228,15 +238,23 @@ export default function Home() {
               <h3 className="text-4xl md:text-6xl font-display font-medium text-primary tracking-tight">Growth Story</h3>
             </div>
 
-            <div className="space-y-16 md:space-y-24 relative">
-              {data.home.milestones.map((item, idx) => (
+            <div className="relative">
+               <button 
+                onClick={() => scroll('left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-white/50 backdrop-blur-sm p-3 rounded-full md:hidden shadow-lg"
+              >
+                 <ChevronLeft className="w-6 h-6 text-primary" />
+              </button>
+              
+              <div ref={milestonesRef} className="flex md:flex-col overflow-x-auto md:overflow-visible gap-8 md:gap-24 relative pb-8 md:pb-0 scroll-smooth md:px-0 px-6 md:snap-none snap-x snap-mandatory">
+                {data.home.milestones.map((item, idx) => (
                 <motion.div
                   key={item.year}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className={`flex flex-col md:flex-row items-center gap-8 md:gap-20 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''} relative z-10 w-full`}
+                  className={`flex-none w-[80vw] snap-center md:w-full flex flex-col md:flex-row items-center gap-8 md:gap-20 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''} relative z-10`}
                 >
                   {/* Refined Year Text Overlay (Filled 3D Effect) */}
                   <div 
@@ -283,6 +301,14 @@ export default function Home() {
                   </div>
                 </motion.div>
               ))}
+              </div>
+
+              <button 
+                onClick={() => scroll('right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-white/50 backdrop-blur-sm p-3 rounded-full md:hidden shadow-lg"
+              >
+                 <ChevronRight className="w-6 h-6 text-primary" />
+              </button>
             </div>
           </div>
         </div>
