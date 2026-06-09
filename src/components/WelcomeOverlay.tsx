@@ -93,17 +93,21 @@ export default function WelcomeOverlay() {
               initial={{ width: 0 }}
               animate={{ width: "100px" }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="h-1 bg-green rounded-full"
+              className="h-1 bg-green rounded-full mb-8"
             ></motion.div>
 
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            <div className="h-12 md:h-20"></div> {/* Space requested in screenshot */}
+
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="text-white/60 text-sm uppercase tracking-widest mt-4"
+              className="px-10 py-5 rounded-[2rem] border border-white/20 backdrop-blur-md bg-white/5 max-w-2xl"
             >
-              Loading Experience...
-            </motion.p>
+              <p className="text-white/90 text-lg md:text-xl font-medium italic tracking-wide leading-relaxed">
+                {data?.welcome?.subtitle || "Push beyond limits. A new dimension of athletic excellence crafted for the modern competitor."}
+              </p>
+            </motion.div>
           </motion.div>
         </motion.div>
       )}

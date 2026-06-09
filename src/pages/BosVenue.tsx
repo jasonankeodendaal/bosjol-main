@@ -300,63 +300,6 @@ export default function BosVenue() {
           </div>
         </div>
       </div>
-
-      <div className="max-w-4xl mx-auto px-6 bg-primary/5 rounded-[3rem] p-12 text-center relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-green/10 rounded-full blur-[60px] pointer-events-none" />
-        <h3 className="text-2xl font-display font-bold uppercase tracking-widest text-primary mb-6">
-          Company Details
-        </h3>
-        <p className="font-sans text-xl text-primary mb-2">
-          {venue.companyName}
-        </p>
-        <p className="font-sans text-primary/80 mb-2 flex items-center justify-center gap-2">
-          <MapPin size={16} /> {venue.address}
-        </p>
-        <p className="font-sans text-primary/80 mb-2 flex items-center justify-center gap-2">
-          <Mail size={16} />
-          <a
-            href={`mailto:${venue.email}`}
-            className="hover:text-green transition-colors"
-          >
-            {venue.email}
-          </a>
-        </p>
-        <p className="font-sans text-primary/80 mb-2 flex items-center justify-center gap-2">
-          <Phone size={16} />
-          <a
-            href={`tel:${venue.phone}`}
-            className="hover:text-green transition-colors"
-          >
-            {venue.phone}
-          </a>
-        </p>
-        {data.seo.localSEO.openingHours && (
-          <p className="font-sans text-primary/80 mb-8 flex items-center justify-center gap-2">
-            <Clock size={16} /> {data.seo.localSEO.openingHours}
-          </p>
-        )}
-
-        <div className="flex justify-center gap-6">
-          {venue.socials.map((s, idx) => (
-            <a
-              key={s.id || idx}
-              href={s.url}
-              target="_blank"
-              rel="noreferrer"
-              className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm hover:scale-110 hover:shadow-md transition-all group"
-            >
-              {s.icon ? (
-                <img
-                  src={s.icon}
-                  className="w-6 h-6 object-contain opacity-70 group-hover:opacity-100"
-                />
-              ) : (
-                <div className="text-primary/70">{s.name.substring(0, 2)}</div>
-              )}
-            </a>
-          ))}
-        </div>
-      </div>
     </motion.div>
   );
 
@@ -678,48 +621,15 @@ export default function BosVenue() {
       exit={{ opacity: 0, y: -20 }}
       className="pb-24 pt-32 px-6 max-w-7xl mx-auto min-h-[80vh] flex flex-col md:flex-row gap-16"
     >
-      <div className="flex-1 md:pr-12">
-        <h2 className="text-6xl md:text-8xl font-display font-bold text-primary mb-6 leading-none tracking-tight">
+      <div className="flex-1 lg:max-w-xl mx-auto w-full">
+        <h2 className="text-4xl md:text-6xl font-display font-bold text-primary mb-6 leading-tight tracking-tight text-center">
           {venue.contact.title}
         </h2>
-        <p className="text-2xl text-primary font-sans font-medium mb-12">
+        <p className="text-xl text-primary font-sans font-medium mb-12 text-center">
           {venue.contact.subtitle}
         </p>
 
-        <div className="space-y-8 mt-12 bg-primary/5 p-10 rounded-[3rem]">
-          <p className="font-sans text-xl text-primary mb-2">
-            {venue.companyName}
-          </p>
-          <p className="font-sans text-lg text-primary/80 flex items-center gap-3">
-            <MapPin size={24} /> {venue.address}
-          </p>
-          <p className="font-sans text-lg text-primary/80 flex items-center gap-3">
-            <Mail size={24} />
-            <a
-              href={`mailto:${venue.email}`}
-              className="hover:text-green transition-colors"
-            >
-              {venue.email}
-            </a>
-          </p>
-          <p className="font-sans text-lg text-primary/80 flex items-center gap-3">
-            <Phone size={24} />
-            <a
-              href={`tel:${venue.phone}`}
-              className="hover:text-green transition-colors"
-            >
-              {venue.phone}
-            </a>
-          </p>
-          {data.seo.localSEO.openingHours && (
-            <p className="font-sans text-lg text-primary/80 flex items-center gap-3">
-              <Clock size={24} /> {data.seo.localSEO.openingHours}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="flex-1 bg-white rounded-[3rem] p-10 shadow-xl border border-primary/5">
+        <div className="bg-white rounded-[3rem] p-10 shadow-xl border border-primary/5">
         <form
           className="space-y-6"
           onSubmit={handleVenueSubmit}
@@ -802,6 +712,7 @@ export default function BosVenue() {
           </button>
         </form>
       </div>
+      </div>
     </motion.div>
   );
 
@@ -840,39 +751,6 @@ export default function BosVenue() {
               {activeTab === "contact" && renderContact()}
             </AnimatePresence>
           </div>
-
-          {/* Tiny Venue Footer */}
-          <footer className="mt-auto py-6 border-t border-primary/10 flex flex-col md:flex-row items-center justify-between px-8 text-xs text-primary/60 font-sans tracking-wide">
-            <div className="flex items-center gap-4 mb-4 md:mb-0">
-              {venue.logo && (
-                <img
-                  src={venue.logo}
-                  alt="Venue"
-                  className="h-6 object-contain opacity-50"
-                />
-              )}
-              <p>
-                &copy; {new Date().getFullYear()} {venue.companyName}. All
-                rights reserved.
-              </p>
-            </div>
-            <div className="flex gap-4">
-              {venue.socials.map((s, idx) => (
-                <a
-                  key={s.id || idx}
-                  href={s.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-green transition-colors flex items-center gap-1"
-                >
-                  {s.icon && (
-                    <img src={s.icon} className="w-3 h-3 opacity-60" />
-                  )}{" "}
-                  {s.name}
-                </a>
-              ))}
-            </div>
-          </footer>
         </div>
       </div>
     </PageTransition>

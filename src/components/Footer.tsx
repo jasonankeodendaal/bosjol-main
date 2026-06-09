@@ -7,6 +7,24 @@ export function Footer() {
   const location = useLocation();
   const isVenue = location.pathname === '/bos-venue';
 
+  const footerData = isVenue ? {
+    name: data?.bosVenue?.companyName || 'BOS VENUE',
+    email: data?.bosVenue?.email || data?.company?.email,
+    phone: data?.bosVenue?.phone || data?.company?.phone,
+    address: data?.bosVenue?.address || data?.company?.address,
+    logo: data?.bosVenue?.logo || data?.company?.logo,
+    socials: data?.bosVenue?.socials?.length ? data.bosVenue.socials : data?.socials,
+    description: data?.bosVenue?.footerDescription || "Multi-sport hub, premium event venue. Celebrations at their best in Mpumalanga."
+  } : {
+    name: data?.company?.name || 'BOSJOL',
+    email: data?.company?.email,
+    phone: data?.company?.phone,
+    address: data?.company?.address,
+    logo: data?.company?.logo,
+    socials: data?.socials,
+    description: "Elevating the standard of sports and celebratory excellence in Mpumalanga. Multi-sport hub, premium event venue."
+  };
+
   return (
     <footer className="bg-white text-primary pb-16 pt-16 px-6 relative overflow-hidden">
       {/* Decorative background elements */}
@@ -18,29 +36,46 @@ export function Footer() {
           {/* Brand Info */}
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-3 group">
-              {data?.company?.logo ? (
+              {footerData.logo ? (
                 <img 
-                  src={data.company.logo} 
+                  src={footerData.logo} 
                   alt="Logo" 
                   loading="lazy"
                   className="h-12 object-contain group-hover:scale-105 transition-transform" 
                 />
               ) : (
                 <span className="text-2xl font-display font-medium tracking-widest text-primary">
-                  {data?.company?.name || 'BOSJOL'}
+                  {footerData.name}
                 </span>
               )}
             </Link>
             <p className="text-sm leading-relaxed text-primary/60 max-w-xs">
-              Elevating the standard of sports and celebratory excellence in Mpumalanga. Multi-sport hub, premium event venue.
+              {footerData.description}
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2.5 rounded-xl bg-primary/5 hover:bg-green hover:text-white transition-all duration-300">
-                <Instagram size={18} />
-              </a>
-              <a href="#" className="p-2.5 rounded-xl bg-primary/5 hover:bg-green hover:text-white transition-all duration-300">
-                <Facebook size={18} />
-              </a>
+              {footerData.socials?.map((s: any, idx: number) => (
+                <a 
+                  key={s.id || idx} 
+                  href={s.url} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-primary/5 hover:bg-green hover:text-white transition-all duration-300"
+                >
+                  {s.name.toLowerCase().includes('instagram') ? <Instagram size={18} /> : 
+                   s.name.toLowerCase().includes('facebook') ? <Facebook size={18} /> : 
+                   <ArrowRight size={18} />}
+                </a>
+              ))}
+              {(!footerData.socials || footerData.socials.length === 0) && (
+                <>
+                  <a href="#" className="p-2.5 rounded-xl bg-primary/5 hover:bg-green hover:text-white transition-all duration-300">
+                    <Instagram size={18} />
+                  </a>
+                  <a href="#" className="p-2.5 rounded-xl bg-primary/5 hover:bg-green hover:text-white transition-all duration-300">
+                    <Facebook size={18} />
+                  </a>
+                </>
+              )}
             </div>
           </div>
           
@@ -65,38 +100,38 @@ export function Footer() {
               </ul>
             </div>
           </div>
-
+ 
           {/* Contact Details */}
           <div className="space-y-6">
             <h4 className="text-[10px] uppercase tracking-[0.25em] font-bold text-primary/40 mb-6">Connect</h4>
             <div className="space-y-4">
-              {data?.company?.address && (
+              {footerData.address && (
                 <div className="flex gap-4 group">
                   <div className="p-2 rounded-lg bg-green/10 text-green shrink-0">
                     <MapPin size={16} />
                   </div>
                   <span className="text-sm text-primary/70 leading-relaxed font-medium transition-colors group-hover:text-primary">
-                    {data.company.address}
+                    {footerData.address}
                   </span>
                 </div>
               )}
-              {data?.company?.phone && (
-                <a href={`tel:${data.company.phone}`} className="flex gap-4 group">
+              {footerData.phone && (
+                <a href={`tel:${footerData.phone}`} className="flex gap-4 group">
                   <div className="p-2 rounded-lg bg-green/10 text-green shrink-0">
                     <Phone size={16} />
                   </div>
                   <span className="text-sm text-primary/70 font-medium transition-colors group-hover:text-green">
-                    {data.company.phone}
+                    {footerData.phone}
                   </span>
                 </a>
               )}
-              {data?.company?.email && (
-                <a href={`mailto:${data.company.email}`} className="flex gap-4 group">
+              {footerData.email && (
+                <a href={`mailto:${footerData.email}`} className="flex gap-4 group">
                   <div className="p-2 rounded-lg bg-green/10 text-green shrink-0">
                     <Mail size={16} />
                   </div>
                   <span className="text-sm text-primary/70 font-medium transition-colors group-hover:text-green break-all">
-                    {data.company.email}
+                    {footerData.email}
                   </span>
                 </a>
               )}
@@ -107,7 +142,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40">
-            © {new Date().getFullYear()} {data?.company?.name || 'Bosjol'}. Crafted for Champions.
+            © {new Date().getFullYear()} {footerData.name}. Crafted for Champions.
           </p>
           <div className="flex gap-8 items-center">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/60 italic">Move Fearlessly.</span>

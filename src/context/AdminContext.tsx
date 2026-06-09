@@ -132,6 +132,7 @@ export interface BosVenueData {
   email: string;
   phone: string;
   address: string;
+  footerDescription?: string;
   socials: SocialLink[];
   home: {
     heroTitle: string;

@@ -111,12 +111,6 @@ function ThemeInjector() {
   );
 }
 
-function ConditionalFooter() {
-  const location = useLocation();
-  if (location.pathname === '/bos-venue') return null;
-  return <Footer />;
-}
-
 export default function App() {
   return (
     <HelmetProvider>
@@ -148,7 +142,7 @@ export default function App() {
               <main className="flex-grow">
                 <LocationProvider />
               </main>
-              <ConditionalFooter />
+              <Footer />
             </div>
           </div>
         </Router>

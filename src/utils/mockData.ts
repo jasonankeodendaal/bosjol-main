@@ -178,6 +178,7 @@ export const mockBosjolData: SiteData = {
     email: "events@bosjol.co.za",
     phone: "072 888 0544",
     address: "BOS Venue Arena",
+    footerDescription: "Multi-sport hub, premium event venue. Celebrations at their best in Mpumalanga.",
     socials: [],
     home: {
       heroTitle: "BOS VENUE",

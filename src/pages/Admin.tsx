@@ -1785,6 +1785,7 @@ export default function AdminDashboard() {
                         "phone",
                       ])}
                       {renderInput("Physical Address", ["bosVenue", "address"])}
+                      {renderInput("Footer Description", ["bosVenue", "footerDescription"], true)}
                     </div>
                   </div>
 
