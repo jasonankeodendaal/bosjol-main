@@ -278,15 +278,20 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
     const loadData = async () => {
       try {
-        // Fetch live data from server to ensure visitors always see the latest version
+        // Fetch live data from server with a timeout to avoid hangs
         let serverData = null;
         try {
-           const res = await fetch('/site-data.json');
+           const controller = new AbortController();
+           const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+           
+           const res = await fetch('/site-data.json', { signal: controller.signal });
+           clearTimeout(timeoutId);
+           
            if (res.ok) {
              serverData = await res.json();
            }
         } catch (e) {
-           console.warn("Could not fetch site-data.json", e);
+           console.warn("Could not fetch site-data.json or request timed out", e);
         }
 
         const isAdmin = window.location.pathname.startsWith('/admin');

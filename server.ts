@@ -90,10 +90,28 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    const distPath = path.resolve(process.cwd(), 'dist');
+    
+    // Serve static files from dist
+    app.use(express.static(distPath, {
+      maxAge: '1d',
+      etag: true
+    }));
+
+    // SPA fallback: handle all remaining GET requests by serving index.html
+    app.get('*', (req, res, next) => {
+      // Avoid intercepting API routes that might have failed
+      if (req.url.startsWith('/api/')) {
+        return next();
+      }
+      
+      const indexPath = path.join(distPath, 'index.html');
+      res.sendFile(indexPath, (err) => {
+        if (err) {
+          console.error('Error sending index.html:', err);
+          res.status(500).send('Server Error: could not load entry point');
+        }
+      });
     });
   }
 

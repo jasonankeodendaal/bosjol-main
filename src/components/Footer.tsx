@@ -8,7 +8,7 @@ export function Footer() {
   const isVenue = location.pathname === '/bos-venue';
 
   return (
-    <footer className="bg-white text-primary pb-16 pt-16 px-6 border-t border-primary/5 relative overflow-hidden mt-10">
+    <footer className="bg-white text-primary pb-16 pt-16 px-6 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />

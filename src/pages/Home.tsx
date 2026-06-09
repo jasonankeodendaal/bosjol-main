@@ -228,20 +228,24 @@ export default function Home() {
               <h3 className="text-4xl md:text-6xl font-display font-medium text-primary tracking-tight">Growth Story</h3>
             </div>
 
-            <div className="space-y-40 md:space-y-64 relative">
+            <div className="space-y-16 md:space-y-24 relative">
               {data.home.milestones.map((item, idx) => (
                 <motion.div
                   key={item.year}
-                  initial={{ opacity: 0, y: 60 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className={`flex flex-col md:flex-row items-center gap-12 md:gap-24 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''} relative z-10 w-full`}
+                  className={`flex flex-col md:flex-row items-center gap-8 md:gap-20 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''} relative z-10 w-full`}
                 >
-                  {/* Giant Year Text Overlay (Fade Outline Effect) */}
+                  {/* Refined Year Text Overlay (Filled 3D Effect) */}
                   <div 
-                    className={`absolute top-1/2 -translate-y-1/2 font-display font-bold text-[10rem] sm:text-[15rem] lg:text-[22rem] text-transparent select-none pointer-events-none z-0 opacity-10 transform ${idx % 2 !== 0 ? '-left-10 lg:-left-40' : '-right-10 lg:-right-40'}`}
-                    style={{ WebkitTextStroke: '2px var(--color-primary)', userSelect: 'none' }}
+                    className={`absolute top-1/2 -translate-y-1/2 font-display font-bold text-6xl md:text-8xl lg:text-9xl text-primary/[0.05] select-none pointer-events-none z-0 transform ${idx % 2 !== 0 ? '-left-2' : '-right-2'}`}
+                    style={{ 
+                      WebkitTextStroke: '1px rgba(0,0,0,0.05)', 
+                      filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.05))',
+                      userSelect: 'none' 
+                    }}
                   >
                     {item.year}
                   </div>

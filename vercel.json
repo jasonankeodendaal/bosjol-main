@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/dist/server.cjs" },
+    { "source": "/site-data.json", "destination": "/public/site-data.json" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
