@@ -158,7 +158,7 @@ export default function Home() {
         {/* MEET THE OWNER SECTION (FREE VIEW) */}
         <div className="relative z-20 pt-24 pb-24">
           {/* Intro block */}
-          <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 gap-4 items-center">
+          <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}

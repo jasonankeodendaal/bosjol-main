@@ -1,6 +1,4 @@
-import { SiteData } from '../context/AdminContext';
-
-export const mockBosjolData: SiteData = {
+{
   "theme": {
     "primaryColor": "#913cd7",
     "accentColor": "#4ade80",
@@ -316,4 +314,4 @@ export const mockBosjolData: SiteData = {
     "termsOfService": "Terms of Service content here...",
     "legalDisclaimer": "Legal Disclaimer content here..."
   }
-};
+}
