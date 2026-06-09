@@ -43,7 +43,7 @@ export default function WelcomeOverlay() {
           {/* Venue logo as background */}
           <div 
             className="absolute inset-0 z-0 opacity-40 bg-cover bg-center transition-opacity duration-1000" 
-            style={{ backgroundImage: `url('${data?.welcome?.logoVenue || data?.welcome?.bgImage}')` }}
+            style={{ backgroundImage: `url('${data?.welcome?.bgImage || data?.welcome?.logoVenue}')` }}
           ></div>
           <div className="absolute inset-0 bg-primary/40 backdrop-blur-[2px]"></div>
           

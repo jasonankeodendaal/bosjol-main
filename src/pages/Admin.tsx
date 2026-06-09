@@ -2575,12 +2575,25 @@ export default function AdminDashboard() {
                   )}
                 </button>
               </div>
-              <div className="bg-primary/5 p-6 rounded-2xl">
-                {renderInput("Title", ["welcome", "title"])}
-                {renderInput("Subtitle", ["welcome", "subtitle"])}
-                {renderImageUpload("Main Logo", ["welcome", "logoMain"])}
-                {renderImageUpload("Venue Logo", ["welcome", "logoVenue"])}
-                {renderImageUpload("Background Image", ["welcome", "bgImage"])}
+              <div className="space-y-8">
+                <div className="bg-primary/5 p-8 rounded-2xl border border-primary/10 shadow-sm">
+                  <h4 className="font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2 text-sm border-b border-primary/10 pb-4">
+                    <Settings className="w-4 h-4 text-green" /> Branding & Logos
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                    {renderImageUpload("Main Logo", ["welcome", "logoMain"])}
+                    {renderImageUpload("Venue Logo", ["welcome", "logoVenue"])}
+                  </div>
+                  {renderInput("Title", ["welcome", "title"])}
+                  {renderInput("Subtitle", ["welcome", "subtitle"])}
+                </div>
+
+                <div className="bg-primary/5 p-8 rounded-2xl border border-primary/10 shadow-sm">
+                  <h4 className="font-bold uppercase tracking-wider text-primary mb-6 flex items-center gap-2 text-sm border-b border-primary/10 pb-4">
+                    <ImageIcon className="w-4 h-4 text-green" /> Aesthetic Background
+                  </h4>
+                  {renderImageUpload("Background Image", ["welcome", "bgImage"])}
+                </div>
               </div>
             </motion.div>
           )}
