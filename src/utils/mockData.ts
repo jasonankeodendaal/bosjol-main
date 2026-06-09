@@ -223,7 +223,13 @@ export const mockBosjolData: SiteData = {
     events: [],
     contact: {
       title: "HOST YOUR EVENT",
-      subtitle: "Contact us to view the venue and discuss your requirements."
+      subtitle: "Contact us to view the venue and discuss your requirements.",
+      inquiryTypes: ["Wedding", "Corporate", "Birthday Party"]
     }
+  },
+  legal: {
+    privacyPolicy: "Privacy Policy content here...",
+    termsOfService: "Terms of Service content here...",
+    legalDisclaimer: "Legal Disclaimer content here..."
   }
 };

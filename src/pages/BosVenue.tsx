@@ -161,29 +161,25 @@ export default function BosVenue() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mb-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 mb-16 grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
         <div>
           <h2
-            className="text-4xl md:text-6xl font-display font-bold text-primary mb-8"
+            className="text-3xl md:text-6xl font-display font-bold text-primary mb-6"
             dangerouslySetInnerHTML={{ __html: venue.home.storyTitle }}
           />
-          <div className="w-12 h-1 bg-gradient-to-r from-green to-lime rounded-full mb-8" />
-          <div className="space-y-6 text-lg text-primary font-sans">
+          <div className="w-12 h-1 bg-gradient-to-r from-green to-lime rounded-full mb-6" />
+          <div className="space-y-4 text-base md:text-lg text-primary font-sans">
             <p dangerouslySetInnerHTML={{ __html: venue.home.storyText1 }} />
             <p dangerouslySetInnerHTML={{ __html: venue.home.storyText2 }} />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="flex gap-3 overflow-x-auto md:grid md:grid-cols-2 pb-4 md:pb-0">
           {venue.home.showcaseImages.map((src, i) => (
             <motion.img
               key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
               src={src}
               loading="lazy"
-              className="w-full aspect-[4/5] object-cover rounded-2xl shadow-lg"
+              className="min-w-[200px] w-full md:w-full aspect-[4/5] object-cover rounded-xl shadow-md"
               alt="Venue Showcase"
             />
           ))}
@@ -191,8 +187,8 @@ export default function BosVenue() {
       </div>
 
       {/* Side by Side Rules Section */}
-      <div className="max-w-7xl mx-auto px-6 mb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="max-w-7xl mx-auto px-4 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {venue.rules.map((rule, idx) => (
             <motion.div
               key={rule.id || idx}
@@ -592,6 +588,7 @@ export default function BosVenue() {
     surname: "",
     telephone: "",
     email: "",
+    inquiryType: "",
     message: "",
   });
 
@@ -603,6 +600,7 @@ export default function BosVenue() {
       `*New Inquiry for Bos Venue*`,
       `*Name:* ${venueFormData.name} ${venueFormData.surname}`,
       `*Phone:* +27${venueFormData.telephone}`,
+      `*Inquiry Type:* ${venueFormData.inquiryType}`,
       `*Email:* ${venueFormData.email}`,
       `*Message:* ${venueFormData.message}`
     ];
@@ -691,6 +689,20 @@ export default function BosVenue() {
                 required
               />
             </div>
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
+              Inquiry Type
+            </label>
+            <select
+              value={venueFormData.inquiryType}
+              onChange={(e) => setVenueFormData(p => ({ ...p, inquiryType: e.target.value }))}
+              className="w-full bg-primary/5 rounded-xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-green transition-all appearance-none"
+              required
+            >
+              <option value="" disabled>Select an inquiry type</option>
+              {venue.contact.inquiryTypes?.map(type => <option key={type} value={type}>{type}</option>)}
+            </select>
           </div>
           <div>
             <label className="block text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">

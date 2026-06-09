@@ -94,10 +94,11 @@ export default function Contact() {
                   ) : field.type === 'dropdown' ? (
                      <select 
                        required
+                       defaultValue=""
                        onChange={(e) => handleFieldChange(field.placeholder, e.target.value)}
                        className="w-full bg-primary/5 rounded-xl px-4 py-3 text-primary text-sm font-sans focus:outline-none focus:ring-1 focus:ring-green transition-all appearance-none cursor-pointer"
                      >
-                       <option value="" disabled selected className="text-primary/40">{field.placeholder}</option>
+                       <option value="" disabled className="text-primary/40">{field.placeholder}</option>
                        {field.options?.split(',').map((opt, i) => (
                          <option key={i} value={opt.trim()} className="text-primary">{opt.trim()}</option>
                        ))}

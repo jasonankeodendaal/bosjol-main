@@ -155,7 +155,14 @@ export interface BosVenueData {
   contact: {
     title: string;
     subtitle: string;
+    inquiryTypes: string[];
   };
+}
+
+export interface LegalConfig {
+  privacyPolicy: string;
+  termsOfService: string;
+  legalDisclaimer: string;
 }
 
 export interface SiteData {
@@ -195,6 +202,7 @@ export interface SiteData {
   };
   seo: SEOConfig;
   bosVenue: BosVenueData;
+  legal: LegalConfig;
 }
 
 const defaultData: SiteData = mockBosjolData;
@@ -371,6 +379,10 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           }
           if (!storedData.welcome) {
              storedData.welcome = defaultData.welcome;
+             needsUpdate = true;
+          }
+          if (!storedData.legal) {
+             storedData.legal = defaultData.legal;
              needsUpdate = true;
           }
            else {

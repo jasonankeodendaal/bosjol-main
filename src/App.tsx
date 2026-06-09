@@ -14,6 +14,7 @@ const Sports = lazy(() => import('./pages/Sports'));
 const Contact = lazy(() => import('./pages/Contact'));
 const BosVenue = lazy(() => import('./pages/BosVenue'));
 const Login = lazy(() => import('./pages/Login'));
+const Legal = lazy(() => import('./pages/Legal'));
 const AdminDashboard = lazy(() => import('./pages/Admin'));
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -49,6 +50,7 @@ function LocationProvider() {
           <Route path="/bos-venue" element={<BosVenue />} />
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/legal/:type" element={<Legal />} />
           <Route path="/admin" element={
             <ProtectedRoute>
               <AdminDashboard />

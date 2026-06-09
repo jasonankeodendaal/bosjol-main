@@ -51,6 +51,7 @@ export default function AdminDashboard() {
     | "welcome"
     | "seo"
     | "maintenance"
+    | "legal"
   >("company");
   const [isSaving, setIsSaving] = useState<{ [key: string]: boolean }>({});
   const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -210,6 +211,32 @@ export default function AdminDashboard() {
       fileInputRef.current.accept = accept;
       fileInputRef.current.click();
     }
+  };
+
+  const renderDropdown = (
+    label: string,
+    path: string[],
+    options: string[],
+  ) => {
+    const val = path.reduce((acc: any, key) => acc[key], draft);
+    return (
+      <div className="mb-4">
+        <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2">
+          {label}
+        </label>
+        <select
+          className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-2 focus:ring-green outline-none"
+          value={val}
+          onChange={(e) => updateDraft(path, e.target.value)}
+        >
+          {options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
   };
 
   const renderInput = (label: string, path: string[], isTextArea = false) => {
@@ -381,6 +408,7 @@ export default function AdminDashboard() {
                 { id: "bosVenue", label: "Venue Site" },
                 { id: "contact", label: "Contact" },
                 { id: "welcome", label: "Welcome" },
+                { id: "legal", label: "Legal" },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -395,19 +423,63 @@ export default function AdminDashboard() {
         </div>
 
         {/* Editor Area - Now Full Width */}
-        <div className="w-full bg-white rounded-xl md:rounded-2xl shadow-sm border border-primary/5 p-5 md:p-12">
+        <div className="w-full bg-white rounded-xl md:rounded-2xl shadow-sm border border-primary/5 p-6 md:p-8">
+          <div className="mb-8 border-b border-primary/10 pb-4">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-primary tracking-tight">
+              {activeTab === "company" ? "Identity" :
+               activeTab === "theme" ? "Aesthetics" :
+               activeTab === "seo" ? "Engine (SEO & Data)" :
+               activeTab === "maintenance" ? "System Maintenance" :
+               activeTab === "home" ? "Home Page Configuration" :
+               activeTab === "sports" ? "Sports Pages Configuration" :
+               activeTab === "bosVenue" ? "Bos Venue Configuration" :
+               activeTab === "contact" ? "Contact Configuration" :
+               activeTab === "welcome" ? "Welcome Overlay Configuration" :
+               activeTab === "legal" ? "Legal Documents Configuration" : ""}
+            </h2>
+            <p className="text-sm text-primary/60 mt-1">
+              {activeTab === "company" ? "Configure core brand identity, company details, and social channels." :
+               activeTab === "theme" ? "Customize visual aesthetics, typography, and color schemes for all site modules." :
+               "Adjust configuration and data settings for this section."}
+            </p>
+          </div>
+           {activeTab === "legal" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-lg font-display font-bold text-primary uppercase tracking-wider">
+                  Legal Documents
+                </h3>
+                  <button
+                  onClick={() => handleSave("legal")}
+                  className="bg-green text-white px-6 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lime transition-all shadow-md hover:shadow-lg"
+                >
+                  {isSaving["legal"] ? "Saving..." : (
+                    <>
+                      <Save size={16} /> Save Changes
+                    </>
+                  )}
+                </button>
+              </div>
+              <div className="grid grid-cols-1 gap-6">
+                {renderInput("Privacy Policy", ["legal", "privacyPolicy"], true)}
+                {renderInput("Terms of Service", ["legal", "termsOfService"], true)}
+                {renderInput("Legal Disclaimer", ["legal", "legalDisclaimer"], true)}
+              </div>
+            </motion.div>
+          )}
+
           {activeTab === "company" && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="flex justify-between items-center mb-8 border-b border-primary/10 pb-4">
-                <h3 className="text-2xl font-display font-bold text-primary">
-                  Company Details
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-lg font-display font-bold text-primary uppercase tracking-wider">
+                  Company Information
                 </h3>
                 <button
                   onClick={() => {
                     handleSave("company");
                     handleSave("socials");
                   }}
-                  className="bg-green text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lime transition-all"
+                  className="bg-green text-white px-6 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lime transition-all shadow-md hover:shadow-lg"
                 >
                   {isSaving["company"] || isSaving["socials"] ? (
                     "Saving..."
@@ -956,31 +1028,45 @@ export default function AdminDashboard() {
 
               <div className="bg-primary/5 p-8 rounded-2xl mb-8 border border-primary/10 shadow-sm">
                 <h4 className="font-bold uppercase tracking-wider text-primary mb-6 text-sm flex items-center gap-2">
-                  <Settings className="w-4 h-4" /> Main Site Typography &
-                  Aesthetics
+                  <Settings className="w-4 h-4" /> Aesthetics Settings
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                  {renderInput(
-                    "Heading Font (e.g. Space Grotesk, sans-serif)",
-                    ["theme", "headingFont"],
-                  )}
-                  {renderInput("Body Font (e.g. Inter, sans-serif)", [
-                    "theme",
-                    "bodyFont",
-                  ])}
-                  {renderInput("Button Border Radius (e.g. 0.75rem)", [
-                    "theme",
-                    "buttonRadius",
-                  ])}
-                  {renderInput("Card Border Radius (e.g. 1.5rem)", [
-                    "theme",
-                    "cardRadius",
-                  ])}
+                
+                {/* Typography Settings */}
+                <div className="mb-8">
+                  <h5 className="font-bold text-[10px] uppercase tracking-widest text-primary/40 mb-4">Typography</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    {renderDropdown(
+                      "Heading Font",
+                      ["theme", "headingFont"],
+                      ["'Oswald', sans-serif", "'Space Grotesk', sans-serif", "'Outfit', sans-serif", "'Playfair Display', serif"]
+                    )}
+                    {renderDropdown(
+                      "Body Font", 
+                      ["theme", "bodyFont"],
+                      ["'Inter', sans-serif", "'JetBrains Mono', monospace"]
+                    )}
+                  </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-primary/10">
+                {/* UI Elements Settings */}
+                <div className="mb-8 pt-8 border-t border-primary/10">
+                  <h5 className="font-bold text-[10px] uppercase tracking-widest text-primary/40 mb-4">UI Borders</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    {renderInput("Button Border Radius (e.g. 0.75rem)", [
+                      "theme",
+                      "buttonRadius",
+                    ])}
+                    {renderInput("Card Border Radius (e.g. 1.5rem)", [
+                      "theme",
+                      "cardRadius",
+                    ])}
+                  </div>
+                </div>
+
+                {/* Branding Extras */}
+                <div className="pt-8 border-t border-primary/10">
                   <h5 className="font-bold text-[10px] uppercase tracking-widest text-primary/40 mb-4">
-                    Branding Extras
+                    Branding
                   </h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="mb-4">
@@ -1786,6 +1872,15 @@ export default function AdminDashboard() {
                       ])}
                       {renderInput("Physical Address", ["bosVenue", "address"])}
                       {renderInput("Footer Description", ["bosVenue", "footerDescription"], true)}
+                      <div className="mb-4">
+                        <label className="block text-xs font-bold text-primary/70 uppercase tracking-wider mb-2">Inquiry Types (comma separated)</label>
+                        <textarea
+                          className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-2 focus:ring-green outline-none"
+                          value={draft.bosVenue.contact.inquiryTypes.join(', ')}
+                          onChange={(e) => updateDraft(["bosVenue", "contact", "inquiryTypes"], e.target.value.split(',').map(s => s.trim()))}
+                          rows={3}
+                        />
+                      </div>
                     </div>
                   </div>
 
