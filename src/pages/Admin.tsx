@@ -3108,45 +3108,17 @@ export default function AdminDashboard() {
                         const data = await res.json();
                         if (data.success) {
                           await updateData(draft);
-                          alert("Mock data saved and applied successfully!");
+                          alert(data.message || "Mock data saved and applied successfully!");
                         } else {
-                          alert("Failed to save mock data");
+                          alert(`Error saving/pushing data: ${data.error || 'Unknown error'}`);
                         }
-                      } catch (e) {
-                        alert("Error saving data");
+                      } catch (e: any) {
+                        alert(`Network/Server Error: ${e.message}`);
                       }
                     }}
                     className="w-full bg-green text-primary py-4 rounded-2xl font-bold hover:bg-lime transition-all shadow-lg"
                   >
                     Save as Mock Data
-                  </button>
-                </div>
-
-                <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-green/20 rounded-full flex items-center justify-center mb-6">
-                    <Globe className="text-green w-8 h-8" />
-                  </div>
-                  <h4 className="text-xl font-display font-bold text-primary mb-2">
-                    Load Bosjol Mock Data
-                  </h4>
-                  <p className="text-sm text-primary/60 mb-8 max-w-xs">
-                    This will populate all sections with data extracted from the
-                    official Bosjol.co.za website.
-                  </p>
-                  <button
-                    onClick={async () => {
-                      if (
-                        confirm(
-                          "Are you sure? This will overwrite your current draft and data with Bosjol mock content.",
-                        )
-                      ) {
-                        await applyMockData();
-                        window.location.reload();
-                      }
-                    }}
-                    className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-green transition-all"
-                  >
-                    Sync with Bosjol.co.za
                   </button>
                 </div>
 

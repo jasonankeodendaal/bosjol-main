@@ -33,16 +33,26 @@ async function startServer() {
         await execPromise('git config --global user.name "AI Studio Admin" || true');
         await execPromise('git config --global user.email "admin@aistudio.com" || true');
         await execPromise('git remote remove origin || true');
-        await execPromise('git remote add origin https://github.com/jasonankeodendaal/bosjol-main.git || true');
+        
+        let gitUrl = 'https://github.com/jasonankeodendaal/bosjol-main.git';
+        if (process.env.GITHUB_TOKEN) {
+          gitUrl = `https://${process.env.GITHUB_TOKEN}@github.com/jasonankeodendaal/bosjol-main.git`;
+        }
+        
+        await execPromise(`git remote add origin ${gitUrl} || true`);
         await execPromise('git add .');
         await execPromise('git commit -m "Update from admin dashboard" || true');
-        await execPromise('git push -f origin HEAD:main');
-        console.log("Successfully pushed to GitHub");
-      } catch (gitErr) {
-        console.warn("Git commit/push failed or simply nothing to commit:", gitErr);
+        const { stdout, stderr } = await execPromise('git push -f origin HEAD:main');
+        console.log("Successfully pushed to GitHub:", stdout);
+      } catch (gitErr: any) {
+        console.error("Git commit/push failed:", gitErr);
+        return res.status(500).json({ 
+          success: false, 
+          error: "Failed to push to GitHub. " + (gitErr.message || "Please check your GITHUB_TOKEN environment variable.") 
+        });
       }
 
-      res.json({ success: true, message: "Mock data saved successfully." });
+      res.json({ success: true, message: "Mock data saved and pushed successfully." });
     } catch (error) {
       console.error("Error saving mock data:", error);
       res.status(500).json({ success: false, error: "Failed to save mock data." });
