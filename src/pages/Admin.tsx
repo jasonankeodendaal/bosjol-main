@@ -53,6 +53,7 @@ export default function AdminDashboard() {
     | "maintenance"
   >("company");
   const [isSaving, setIsSaving] = useState<{ [key: string]: boolean }>({});
+  const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   const [expandedSport, setExpandedSport] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -3101,6 +3102,7 @@ export default function AdminDashboard() {
                     onClick={async () => {
                       try {
                         setIsSaving((prev) => ({ ...prev, mock: true }));
+                        setSaveMessage(null);
                         const res = await fetch("/api/save-mock-data", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -3109,12 +3111,12 @@ export default function AdminDashboard() {
                         const data = await res.json();
                         if (data.success) {
                           await updateData(draft);
-                          alert(data.message || "Mock data saved and applied successfully!");
+                          setSaveMessage({ type: 'success', text: data.message || "Mock data saved and applied successfully!" });
                         } else {
-                          alert(`Error saving/pushing data: ${data.error || 'Unknown error'}`);
+                          setSaveMessage({ type: 'error', text: `Error saving/pushing data: ${data.error || 'Unknown error'}` });
                         }
                       } catch (e: any) {
-                        alert(`Network/Server Error: ${e.message}`);
+                        setSaveMessage({ type: 'error', text: `Network/Server Error: ${e.message}` });
                       } finally {
                         setIsSaving((prev) => ({ ...prev, mock: false }));
                       }
@@ -3124,6 +3126,11 @@ export default function AdminDashboard() {
                   >
                     {isSaving["mock"] ? "Saving & Pushing..." : "Save as Mock Data"}
                   </button>
+                  {saveMessage && (
+                    <div className={`mt-4 p-4 rounded-xl text-sm ${saveMessage.type === 'success' ? 'bg-green/10 text-green-700 border border-green' : 'bg-red-100 text-red-700 border border-red-500'}`}>
+                      {saveMessage.text}
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-red-50 p-8 rounded-3xl border border-red-100 flex flex-col items-center text-center">
