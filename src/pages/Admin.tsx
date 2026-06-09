@@ -357,22 +357,33 @@ export default function AdminDashboard() {
         <div className="w-full bg-white rounded-xl md:rounded-2xl shadow-sm border border-primary/5 overflow-hidden">
           {/* Top Bar: Brand & Session */}
           <div className="px-4 md:px-8 py-3 md:py-4 border-b border-primary/5 flex justify-between items-center bg-primary text-white">
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                className="md:hidden p-2 hover:bg-white/10 rounded-lg"
-              >
-                <Menu size={20} />
-              </button>
-              <div>
-                <h2 className="font-display font-bold text-lg md:text-xl uppercase tracking-wider leading-none">
-                  BOSJOL Management
-                </h2>
-                <p className="text-[9px] md:text-[10px] text-white/50 font-mono mt-1 uppercase tracking-widest">
-                  Admin Dashboard v3.0
-                </p>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setIsMenuOpen(!isMenuOpen)} 
+                  className="p-2 hover:bg-white/10 rounded-lg flex items-center gap-2 transition-all active:scale-95"
+                >
+                  <Menu size={20} />
+                  <span className="hidden md:inline text-[10px] font-bold uppercase tracking-[0.2em]">Navigation</span>
+                  <ChevronDown size={14} className={`transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <div className="hidden md:flex items-center gap-2 ml-2 pl-4 border-l border-white/20">
+                  <span className="text-[9px] text-white/50 font-bold uppercase tracking-widest">Active Section:</span>
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-green">
+                    {[
+                      { id: "company", label: "Identity" },
+                      { id: "theme", label: "Aesthetics" },
+                      { id: "seo", label: "Engine" },
+                      { id: "maintenance", label: "System" },
+                      { id: "home", label: "Home Page" },
+                      { id: "sports", label: "Sports Pages" },
+                      { id: "bosVenue", label: "Venue Site" },
+                      { id: "contact", label: "Contact" },
+                      { id: "welcome", label: "Welcome" },
+                      { id: "legal", label: "Legal" },
+                    ].find(t => t.id === activeTab)?.label}
+                  </span>
+                </div>
               </div>
-            </div>
 
             <button
               onClick={handleLogout}
@@ -384,32 +395,45 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          {/* Navigation - Vertical Dropdown */}
-          <div className={`${isMenuOpen ? "flex" : "hidden"} bg-primary/5 flex-col p-2 gap-1`}>
-            {[
-              { id: "company", label: "Identity", icon: Globe },
-              { id: "theme", label: "Aesthetics", icon: Settings },
-              { id: "seo", label: "Engine", icon: Search },
-              { id: "maintenance", label: "System", icon: Code },
-              { id: "home", label: "Home Page" },
-              { id: "sports", label: "Sports Pages" },
-              { id: "bosVenue", label: "Venue Site" },
-              { id: "contact", label: "Contact" },
-              { id: "welcome", label: "Welcome" },
-              { id: "legal", label: "Legal" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id as any);
-                  setIsMenuOpen(false);
-                }}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-bold text-xs uppercase tracking-wider ${activeTab === tab.id ? "bg-primary text-white" : "text-primary/60 hover:text-primary hover:bg-white"}`}
-              >
-                {tab.icon && <tab.icon size={16} />}
-                {tab.label}
-              </button>
-            ))}
+          {/* Navigation - Vertical Dropdown Dropdown */}
+          <div className="relative">
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden bg-primary/5 border-b border-primary/5"
+                >
+                  <div className="p-2 md:p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {[
+                      { id: "company", label: "Identity", icon: Globe },
+                      { id: "theme", label: "Aesthetics", icon: Settings },
+                      { id: "seo", label: "Engine", icon: Search },
+                      { id: "maintenance", label: "System", icon: Code },
+                      { id: "home", label: "Home Page" },
+                      { id: "sports", label: "Sports Pages" },
+                      { id: "bosVenue", label: "Venue Site" },
+                      { id: "contact", label: "Contact" },
+                      { id: "welcome", label: "Welcome" },
+                      { id: "legal", label: "Legal" },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          setActiveTab(tab.id as any);
+                          setIsMenuOpen(false);
+                        }}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-xs uppercase tracking-wider ${activeTab === tab.id ? "bg-primary text-white shadow-md shadow-primary/20" : "text-primary/60 hover:text-primary hover:bg-white"}`}
+                      >
+                        {tab.icon && <tab.icon size={16} />}
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -1451,6 +1475,11 @@ export default function AdminDashboard() {
                               sportIdx,
                               "videoBg",
                             ])}
+                            {renderImageUpload("Video Highlight File (.mp4)", [
+                              "sportsPages",
+                              sportIdx,
+                              "videoFile",
+                            ], undefined, true)}
                             {renderInput("Main Text", [
                               "sportsPages",
                               sportIdx,

@@ -11,6 +11,8 @@ const execPromise = util.promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const BUILD_VERSION = Date.now().toString();
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -76,6 +78,10 @@ async function startServer() {
       console.error("Error saving mock data:", error);
       res.status(500).json({ success: false, error: "Failed to save mock data." });
     }
+  });
+
+  app.get("/api/version", (req, res) => {
+    res.json({ version: BUILD_VERSION });
   });
 
   app.get("/api/health", (req, res) => {

@@ -7,6 +7,7 @@ import { Footer } from './components/Footer';
 import { AdminProvider, useAdmin } from './context/AdminContext';
 import WelcomeOverlay from './components/WelcomeOverlay';
 import HeadManager from './components/HeadManager';
+import { VersionPoller } from './components/VersionPoller';
 
 // Pages - Optimized with Code Splitting
 const Home = lazy(() => import('./pages/Home'));
@@ -121,6 +122,7 @@ export default function App() {
           <HeadManager />
           <WelcomeOverlay />
           <ThemeInjector />
+          <VersionPoller />
           <div className="min-h-screen text-primary flex flex-col font-sans relative overflow-x-hidden transition-colors duration-500" style={{backgroundColor: 'var(--color-bg)'}}>
             
             {/* SYSTEM-WIDE MOVING BLURRED BACKGROUNDS - Optimized for scroll performance */}

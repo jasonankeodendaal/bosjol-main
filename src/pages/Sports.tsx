@@ -9,6 +9,7 @@ import { useAdmin } from "../context/AdminContext";
 export default function Sports() {
   const { slug } = useParams();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { data, loading } = useAdmin();
 
@@ -176,6 +177,11 @@ export default function Sports() {
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 100 }}
                 className="w-20 h-20 bg-lime rounded-full shadow-[0_0_30px_rgba(214,224,26,0.4)] flex items-center justify-center mx-auto mb-6 cursor-pointer hover:scale-110 transition-transform duration-300"
+                onClick={() => {
+                  if (sportData.videoFile) {
+                    setSelectedVideo(sportData.videoFile);
+                  }
+                }}
               >
                 <Play
                   className="w-8 h-8 text-primary pl-1"
@@ -221,6 +227,41 @@ export default function Sports() {
                 className="max-h-[85vh] max-w-[95vw] object-contain rounded-3xl shadow-2xl ring-1 ring-primary/5 relative z-[105]"
                 onClick={(e) => e.stopPropagation()}
               />
+            </motion.div>
+          )}
+
+          {selectedVideo && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-2xl p-4 sm:p-10"
+              onClick={() => setSelectedVideo(null)}
+            >
+              <button
+                className="absolute top-6 right-6 text-white/50 hover:text-green bg-black/50 p-2 rounded-full shadow-md transition-all z-[110]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedVideo(null);
+                }}
+              >
+                <X size={24} />
+              </button>
+
+              <motion.div
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                className="w-full max-w-5xl aspect-video rounded-3xl overflow-hidden shadow-2xl relative z-[105]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <video
+                  src={selectedVideo}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain bg-black"
+                />
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

@@ -97,7 +97,8 @@ export interface SportPageData {
   storyText2: string;
   pdfs: PDFFile[];
   gallery: string[];
-  videoBg: string;
+  videoBg: string; // Thumbnail/Cover image or background video
+  videoFile?: string; // Actual mp4 video file to play
   videoText: string;
   videoSubtext: string;
 }
@@ -155,7 +156,7 @@ export interface BosVenueData {
   contact: {
     title: string;
     subtitle: string;
-    inquiryTypes: string[];
+    inquiryTypes?: string[];
   };
 }
 
@@ -213,6 +214,7 @@ interface AdminContextType {
   updateSectionData: (section: keyof SiteData, sectionData: any) => Promise<void>;
   resetToDefaults: () => Promise<void>;
   applyMockData: () => Promise<void>;
+  refreshData: () => Promise<void>;
   loading: boolean;
   isAuthenticated: boolean;
   login: () => void;
@@ -225,6 +227,7 @@ export const AdminContext = createContext<AdminContextType>({
   updateSectionData: async () => {},
   resetToDefaults: async () => {},
   applyMockData: async () => {},
+  refreshData: async () => {},
   loading: true,
   isAuthenticated: false,
   login: () => {},
@@ -278,6 +281,28 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       clearInterval(interval);
     };
   }, [isAuthenticated, lastActivity]);
+
+  const refreshData = async () => {
+    try {
+      const res = await fetch('/site-data.json', { cache: 'no-store' });
+      if (res.ok) {
+        const serverData = await res.json();
+        setData(serverData);
+        const isAdmin = window.location.pathname.startsWith('/admin');
+        if (!isAdmin) {
+          await localforage.setItem('siteData', serverData);
+        }
+      }
+    } catch (e) {
+      console.warn("Manual data refresh failed", e);
+    }
+  };
+
+  // Seamless background sync
+  useEffect(() => {
+    const interval = setInterval(refreshData, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     localforage.config({
@@ -525,7 +550,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AdminContext.Provider value={{ data, updateData, updateSectionData, resetToDefaults, applyMockData, loading, isAuthenticated, login, logout }}>
+    <AdminContext.Provider value={{ data, updateData, updateSectionData, resetToDefaults, applyMockData, refreshData, loading, isAuthenticated, login, logout }}>
       {loading ? null : children}
     </AdminContext.Provider>
   );
