@@ -173,13 +173,13 @@ export default function BosVenue() {
             <p dangerouslySetInnerHTML={{ __html: venue.home.storyText2 }} />
           </div>
         </div>
-        <div className="flex gap-3 overflow-x-auto md:grid md:grid-cols-2 pb-4 md:pb-0">
+        <div className="grid grid-cols-2 gap-3">
           {venue.home.showcaseImages.map((src, i) => (
             <motion.img
               key={i}
               src={src}
               loading="lazy"
-              className="min-w-[200px] w-full md:w-full aspect-[4/5] object-cover rounded-xl shadow-md"
+              className="w-full aspect-[4/5] object-cover rounded-xl shadow-md"
               alt="Venue Showcase"
             />
           ))}

@@ -1028,45 +1028,33 @@ export default function AdminDashboard() {
 
               <div className="bg-primary/5 p-8 rounded-2xl mb-8 border border-primary/10 shadow-sm">
                 <h4 className="font-bold uppercase tracking-wider text-primary mb-6 text-sm flex items-center gap-2">
-                  <Settings className="w-4 h-4" /> Aesthetics Settings
+                  <Settings className="w-4 h-4" /> Main Site Typography &
+                  Aesthetics
                 </h4>
-                
-                {/* Typography Settings */}
-                <div className="mb-8">
-                  <h5 className="font-bold text-[10px] uppercase tracking-widest text-primary/40 mb-4">Typography</h5>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                    {renderDropdown(
-                      "Heading Font",
-                      ["theme", "headingFont"],
-                      ["'Oswald', sans-serif", "'Space Grotesk', sans-serif", "'Outfit', sans-serif", "'Playfair Display', serif"]
-                    )}
-                    {renderDropdown(
-                      "Body Font", 
-                      ["theme", "bodyFont"],
-                      ["'Inter', sans-serif", "'JetBrains Mono', monospace"]
-                    )}
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                  {renderDropdown(
+                    "Heading Font",
+                    ["theme", "headingFont"],
+                    ["'Oswald', sans-serif", "'Space Grotesk', sans-serif", "'Outfit', sans-serif", "'Playfair Display', serif"]
+                  )}
+                  {renderDropdown(
+                    "Body Font", 
+                    ["theme", "bodyFont"],
+                    ["'Inter', sans-serif", "'JetBrains Mono', monospace"]
+                  )}
+                  {renderInput("Button Border Radius (e.g. 0.75rem)", [
+                    "theme",
+                    "buttonRadius",
+                  ])}
+                  {renderInput("Card Border Radius (e.g. 1.5rem)", [
+                    "theme",
+                    "cardRadius",
+                  ])}
                 </div>
 
-                {/* UI Elements Settings */}
-                <div className="mb-8 pt-8 border-t border-primary/10">
-                  <h5 className="font-bold text-[10px] uppercase tracking-widest text-primary/40 mb-4">UI Borders</h5>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                    {renderInput("Button Border Radius (e.g. 0.75rem)", [
-                      "theme",
-                      "buttonRadius",
-                    ])}
-                    {renderInput("Card Border Radius (e.g. 1.5rem)", [
-                      "theme",
-                      "cardRadius",
-                    ])}
-                  </div>
-                </div>
-
-                {/* Branding Extras */}
-                <div className="pt-8 border-t border-primary/10">
+                <div className="mt-8 pt-8 border-t border-primary/10">
                   <h5 className="font-bold text-[10px] uppercase tracking-widest text-primary/40 mb-4">
-                    Branding
+                    Branding Extras
                   </h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="mb-4">
