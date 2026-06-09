@@ -9,7 +9,6 @@ import { useAdmin } from "../context/AdminContext";
 export default function Sports() {
   const { slug } = useParams();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { data, loading } = useAdmin();
 
@@ -148,52 +147,43 @@ export default function Sports() {
           )}
 
           {/* VIDEO SHOWCASE */}
-          <section className="relative py-16 mx-2 md:mx-10 rounded-2xl md:rounded-[2rem] mb-10 overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 bg-primary z-0" />
+          <section className="relative py-12 md:py-20 px-2 md:px-10 mb-10 overflow-hidden">
+            <div className="max-w-6xl mx-auto">
+              <div className="mb-10 text-center">
+                 <h3 className="text-3xl md:text-5xl font-display font-bold uppercase tracking-tight text-primary mb-2">
+                  {sportData.videoText}
+                </h3>
+                <div className="w-16 h-1.5 bg-green mx-auto mb-4 rounded-full" />
+                <p className="text-primary/60 text-xs md:text-sm tracking-[0.3em] font-bold uppercase">
+                  {sportData.videoSubtext}
+                </p>
+              </div>
 
-            {sportData.videoBg &&
-            (sportData.videoBg.includes("video") ||
-              sportData.videoBg.endsWith(".mp4")) ? (
-              <video
-                src={sportData.videoBg}
-                className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-[1px] mix-blend-luminosity z-0"
-                autoPlay
-                muted
-                loop
-              />
-            ) : (
-              <img
-                src={sportData.videoBg}
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-[1px] mix-blend-luminosity z-0"
-                alt="Video Background"
-              />
-            )}
-
-            <div className="relative z-20 text-center px-4">
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 100 }}
-                className="w-20 h-20 bg-lime rounded-full shadow-[0_0_30px_rgba(214,224,26,0.4)] flex items-center justify-center mx-auto mb-6 cursor-pointer hover:scale-110 transition-transform duration-300"
-                onClick={() => {
-                  if (sportData.videoFile) {
-                    setSelectedVideo(sportData.videoFile);
-                  }
-                }}
-              >
-                <Play
-                  className="w-8 h-8 text-primary pl-1"
-                  fill="currentColor"
-                />
-              </motion.div>
-              <h3 className="text-2xl sm:text-3xl font-display font-medium uppercase tracking-wide text-white">
-                {sportData.videoText}
-              </h3>
-              <p className="mt-2 text-white/90 text-sm tracking-widest uppercase">
-                {sportData.videoSubtext}
-              </p>
+              <div className="relative rounded-3xl md:rounded-[3rem] overflow-hidden bg-black shadow-2xl aspect-video group border border-primary/5 ring-1 ring-primary/5">
+                {sportData.videoFile ? (
+                  <video
+                    src={sportData.videoFile}
+                    poster={sportData.videoBg}
+                    controls
+                    className="w-full h-full object-cover"
+                    playsInline
+                  />
+                ) : (
+                  <>
+                    <img 
+                      src={sportData.videoBg} 
+                      className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700" 
+                      alt="Teaser"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                       <div className="text-white/40 font-mono text-[10px] uppercase tracking-[0.5em] animate-pulse">
+                         Media Preview Mode
+                       </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </section>
         </div>
@@ -227,41 +217,6 @@ export default function Sports() {
                 className="max-h-[85vh] max-w-[95vw] object-contain rounded-3xl shadow-2xl ring-1 ring-primary/5 relative z-[105]"
                 onClick={(e) => e.stopPropagation()}
               />
-            </motion.div>
-          )}
-
-          {selectedVideo && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-2xl p-4 sm:p-10"
-              onClick={() => setSelectedVideo(null)}
-            >
-              <button
-                className="absolute top-6 right-6 text-white/50 hover:text-green bg-black/50 p-2 rounded-full shadow-md transition-all z-[110]"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedVideo(null);
-                }}
-              >
-                <X size={24} />
-              </button>
-
-              <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                className="w-full max-w-5xl aspect-video rounded-3xl overflow-hidden shadow-2xl relative z-[105]"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <video
-                  src={selectedVideo}
-                  controls
-                  autoPlay
-                  className="w-full h-full object-contain bg-black"
-                />
-              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAdmin } from '../context/AdminContext';
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Instagram, Facebook, ArrowRight, Lock } from 'lucide-react';
 
 export function Footer() {
   const { data } = useAdmin();
@@ -132,6 +132,14 @@ export function Footer() {
           <p className="text-[9px] font-bold uppercase tracking-widest text-primary/40">
             © {new Date().getFullYear()} {footerData.name}.
           </p>
+          
+          <Link 
+            to="/admin" 
+            className="hidden md:flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-primary/30 hover:text-green transition-colors"
+          >
+            <Lock size={10} />
+            Admin Portal
+          </Link>
         </div>
       </div>
     </footer>
