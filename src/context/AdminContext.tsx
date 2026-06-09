@@ -490,9 +490,13 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setData(newData);
     try {
       await localforage.setItem('siteData', newData);
+      await fetch('/api/save-mock-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newData)
+      });
     } catch (err) {
-      console.error("localforage setItem failed:", err);
-      // Fallback to storing only essential data if quota is exceeded
+      console.error("Failed to save or push data:", err);
     }
   };
 
@@ -500,6 +504,11 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setData((prev) => {
       const newData = { ...prev, [section]: sectionData };
       localforage.setItem('siteData', newData).catch(console.error);
+      fetch('/api/save-mock-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newData)
+      }).catch(console.error);
       return newData;
     });
   };
