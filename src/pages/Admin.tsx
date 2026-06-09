@@ -3100,6 +3100,7 @@ export default function AdminDashboard() {
                   <button
                     onClick={async () => {
                       try {
+                        setIsSaving((prev) => ({ ...prev, mock: true }));
                         const res = await fetch("/api/save-mock-data", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -3114,11 +3115,14 @@ export default function AdminDashboard() {
                         }
                       } catch (e: any) {
                         alert(`Network/Server Error: ${e.message}`);
+                      } finally {
+                        setIsSaving((prev) => ({ ...prev, mock: false }));
                       }
                     }}
-                    className="w-full bg-green text-primary py-4 rounded-2xl font-bold hover:bg-lime transition-all shadow-lg"
+                    className={`w-full py-4 rounded-2xl font-bold transition-all shadow-lg ${isSaving["mock"] ? "bg-primary/20 cursor-not-allowed" : "bg-green hover:bg-lime text-primary"}`}
+                    disabled={isSaving["mock"]}
                   >
-                    Save as Mock Data
+                    {isSaving["mock"] ? "Saving & Pushing..." : "Save as Mock Data"}
                   </button>
                 </div>
 

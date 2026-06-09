@@ -28,21 +28,33 @@ async function startServer() {
       await fs.writeFile(filePath, dataStr, "utf-8");
       
       try {
-        await execPromise('git config --global init.defaultBranch main || true');
-        await execPromise('git init || true');
-        await execPromise('git config --global user.name "AI Studio Admin" || true');
-        await execPromise('git config --global user.email "admin@aistudio.com" || true');
-        await execPromise('git remote remove origin || true');
-        
         let gitUrl = 'https://github.com/jasonankeodendaal/bosjol-main.git';
         if (process.env.GITHUB_TOKEN) {
           gitUrl = `https://${process.env.GITHUB_TOKEN}@github.com/jasonankeodendaal/bosjol-main.git`;
         }
         
-        await execPromise(`git remote add origin ${gitUrl} || true`);
-        await execPromise('git add .');
-        await execPromise('git commit -m "Update from admin dashboard" || true');
-        const { stdout, stderr } = await execPromise('git push -f origin HEAD:main');
+        const tempDir = `/tmp/bosjol-git-temp-${Date.now()}`;
+        await execPromise(`rm -rf ${tempDir} || true`);
+        await execPromise(`git clone ${gitUrl} ${tempDir}`);
+        
+        // Copy current files into the cloned repo, ignoring unneeded directories
+        const copyOpts = { 
+          recursive: true, 
+          force: true,
+          filter: (src: string) => {
+            const basename = path.basename(src);
+            return !['node_modules', '.git', '.env', 'dist'].includes(basename);
+          }
+        };
+        await fs.cp(process.cwd(), tempDir, copyOpts);
+        
+        await execPromise(`cd ${tempDir} && git config user.name "AI Studio Admin"`);
+        await execPromise(`cd ${tempDir} && git config user.email "admin@aistudio.com"`);
+        await execPromise(`cd ${tempDir} && git add .`);
+        await execPromise(`cd ${tempDir} && git commit -m "Update from admin dashboard" || true`);
+        const { stdout, stderr } = await execPromise(`cd ${tempDir} && git push origin main`);
+        await execPromise(`rm -rf ${tempDir} || true`);
+        
         console.log("Successfully pushed to GitHub:", stdout);
       } catch (gitErr: any) {
         console.error("Git commit/push failed:", gitErr);
